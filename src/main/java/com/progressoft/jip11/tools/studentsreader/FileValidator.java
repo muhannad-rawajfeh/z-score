@@ -3,15 +3,15 @@ package com.progressoft.jip11.tools.studentsreader;
 import com.progressoft.jip11.tools.studentsreader.dataformat.DataFormat;
 
 import java.nio.file.Files;
-import java.nio.file.Path;
+import java.nio.file.Paths;
 
 public class FileValidator {
 
-    public void validateFile(Path path) {
+    public void validateFile(String path) {
         if (path == null) {
             throw new StudentsReaderException("File cannot be null");
         }
-        if (Files.notExists(path)) {
+        if (Files.notExists(Paths.get(path))) {
             throw new StudentsReaderException("File does not exist");
         }
     }

@@ -6,5 +6,5 @@ import java.nio.file.Path;
 import java.util.List;
 
 public interface StudentsReader {
-    List<StudentInfo> parse(Path path);
+    List<StudentInfo> parse(String path);
 }

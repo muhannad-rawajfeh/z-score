@@ -7,7 +7,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,12 +21,12 @@ public class CsvReader implements StudentsReader {
     }
 
     @Override
-    public List<StudentInfo> parse(Path path) {
+    public List<StudentInfo> parse(String path) {
         validator.validateFile(path);
 
         List<StudentInfo> studentsInfo = new ArrayList<>();
 
-        try (BufferedReader bReader = Files.newBufferedReader(path, StandardCharsets.UTF_8)) {
+        try (BufferedReader bReader = Files.newBufferedReader(Paths.get(path), StandardCharsets.UTF_8)) {
             String line;
             int lineNo = 0;
             bReader.readLine();

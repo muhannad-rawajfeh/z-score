@@ -8,8 +8,6 @@ import com.progressoft.jip11.tools.studentsreader.dataformat.StudentInfoFormat;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,13 +34,13 @@ class StudentsReaderTest {
     @Test
     void givenNoneExistingFile_whenParse_thenThrowException() {
         String message = assertThrows(StudentsReaderException.class,
-                () -> reader.parse(Paths.get(dirPath + "file.csv"))).getMessage();
+                () -> reader.parse(dirPath + "file.csv")).getMessage();
         assertEquals("File does not exist", message);
     }
 
     @Test
     void givenFileWithARecordWithAnInvalidNumberOfFields_whenParse_thenThrowException() {
-        Path path = Paths.get(dirPath + "invalid-no-of-fields.csv");
+        String path = dirPath + "invalid-no-of-fields.csv";
 
         String message = assertThrows(StudentsReaderException.class,
                 () -> reader.parse(path)).getMessage();
@@ -51,7 +49,7 @@ class StudentsReaderTest {
 
     @Test
     void givenFileWithARecordWithAnInvalidStudentId_whenParse_thenThrowException() {
-        Path path = Paths.get(dirPath + "invalid-student-id.csv");
+        String path = dirPath + "invalid-student-id.csv";
 
         String message = assertThrows(StudentsReaderException.class,
                 () -> reader.parse(path)).getMessage();
@@ -60,7 +58,7 @@ class StudentsReaderTest {
 
     @Test
     void givenFileWithARecordWithAnInvalidClassNo_whenParse_thenThrowException() {
-        Path path = Paths.get(dirPath + "invalid-class-no.csv");
+        String path = dirPath + "invalid-class-no.csv";
 
         String message = assertThrows(StudentsReaderException.class,
                 () -> reader.parse(path)).getMessage();
@@ -69,7 +67,7 @@ class StudentsReaderTest {
 
     @Test
     void givenFileWithARecordWithAnInvalidMark_whenParse_thenThrowException() {
-        Path path = Paths.get(dirPath + "invalid-mark.csv");
+        String path = dirPath + "invalid-mark.csv";
 
         String message = assertThrows(StudentsReaderException.class,
                 () -> reader.parse(path)).getMessage();
@@ -84,7 +82,7 @@ class StudentsReaderTest {
         expected.add(s1);
         expected.add(s2);
 
-        Path path = Paths.get(dirPath + "valid-file.csv");
+        String path = dirPath + "valid-file.csv";
 
         List<StudentInfo> result = reader.parse(path);
 
