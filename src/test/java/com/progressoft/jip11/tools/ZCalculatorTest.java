@@ -16,7 +16,7 @@ class ZCalculatorTest {
     private ZCalculator zCalculator;
 
     @Test
-    void givenFileWithOddNoOfElements_whenFindMedianTest_thenReturnMedian() {
+    void givenFileWithOddNoOfElements_whenFindMedian_thenReturnMedian() {
         studentsInfo = studentsReader.parse("src/test/resources/odd.csv");
         zCalculator = new ZCalculator(studentsInfo);
         double result = zCalculator.findMedian();
@@ -24,10 +24,26 @@ class ZCalculatorTest {
     }
 
     @Test
-    void givenFileWithEvenNoOfElements_whenFindMedianTest_thenReturnMedian() {
+    void givenFileWithEvenNoOfElements_whenFindMedian_thenReturnMedian() {
         studentsInfo = studentsReader.parse("src/test/resources/even.csv");
         zCalculator = new ZCalculator(studentsInfo);
         double result = zCalculator.findMedian();
         assertEquals(70.5, result);
+    }
+
+    @Test
+    void givenFile_whenFindVariance_thenReturnVariance() {
+        studentsInfo = studentsReader.parse("src/test/resources/variance.csv");
+        zCalculator = new ZCalculator(studentsInfo);
+        double result = zCalculator.findVariance();
+        assertEquals(62.5, result);
+    }
+
+    @Test
+    void givenFile_whenFindStandardDeviation_thenReturnStandardDeviation() {
+        studentsInfo = studentsReader.parse("src/test/resources/variance.csv");
+        zCalculator = new ZCalculator(studentsInfo);
+        double result = zCalculator.findDeviation();
+        assertEquals(7.905694150420948, result);
     }
 }

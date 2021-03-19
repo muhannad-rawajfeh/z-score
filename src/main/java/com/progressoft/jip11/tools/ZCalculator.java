@@ -12,7 +12,7 @@ public class ZCalculator {
     }
 
     public double findMedian() {
-        int length = studentsInfo.size();
+        int length = getCount();
         int[] marks = new int[length];
         int i = 0;
         for (StudentInfo s : studentsInfo) {
@@ -26,6 +26,27 @@ public class ZCalculator {
     }
 
     public double findVariance() {
-        return 0;
+        double mean = (double) findSum() / getCount();
+        double sum = 0;
+        for (StudentInfo s : studentsInfo) {
+            sum += Math.pow(s.getMark() - mean, 2);
+        }
+        return sum / (getCount() - 1);
+    }
+
+    public double findDeviation() {
+        return Math.sqrt(findVariance());
+    }
+
+    public int getCount() {
+        return studentsInfo.size();
+    }
+
+    private int findSum() {
+        int sum = 0;
+        for (StudentInfo s : studentsInfo) {
+            sum += s.getMark();
+        }
+        return sum;
     }
 }

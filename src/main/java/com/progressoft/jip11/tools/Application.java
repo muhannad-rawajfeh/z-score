@@ -11,14 +11,13 @@ import java.util.Scanner;
 public class Application {
 
     public static void main(String[] args) {
-        System.out.println("-----------------------------------------------------\n" +
-                            "Welcome to Z-Score app. Please insert your file path:\n" +
-                            "-----------------------------------------------------");
+        Menus menus = new Menus();
+        menus.displayWelcome();
         Scanner scanner = new Scanner(System.in);
         StudentsReader studentsReader = new CsvReader(new StudentInfoFormat());
         List<StudentInfo> result = start(scanner, studentsReader);
-        Menus menus = new Menus();
-        switch (menus.displayMain()) {
+        int choice = menus.getMainOption();
+        switch (choice) {
             case 1:
                 menus.displaySummary(result);
         }
