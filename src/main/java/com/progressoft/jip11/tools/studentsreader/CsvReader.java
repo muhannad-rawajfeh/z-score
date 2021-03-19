@@ -28,10 +28,15 @@ public class CsvReader implements StudentsReader {
 
         try (BufferedReader bReader = Files.newBufferedReader(Paths.get(path), StandardCharsets.UTF_8)) {
             String line;
-            int lineNo = 0;
-            bReader.readLine();
+            int lineNo = 1;
+            if (bReader.readLine() == null) {
+                throw new StudentsReaderException("File is empty");
+            }
             while ((line = bReader.readLine()) != null) {
-                lineNo++;                
+                lineNo++;
+                if (line.isBlank()) {
+                    continue;
+                }
                 studentsInfo.add(mapLine(line, lineNo));
             }
             return studentsInfo;
@@ -41,7 +46,7 @@ public class CsvReader implements StudentsReader {
     }
 
     private StudentInfo mapLine(String line, int lineNo) {
-        String[] attributes = line.split(", ");
+        String[] attributes = line.split(",");
 
         validator.validateFields(dataFormat, attributes, lineNo);
 

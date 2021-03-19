@@ -5,7 +5,7 @@ import java.util.regex.Pattern;
 public class StudentInfoFormat implements DataFormat {
 
     private static final int NUMBER_OF_FIELDS = 3;
-    private static final Pattern studentIdPattern = Pattern.compile("\\d{9}");
+    private static final Pattern studentIdPattern = Pattern.compile("\\d+");
     private static final Pattern classNoPattern = Pattern.compile("([A-F])");
     private static final Pattern markPattern = Pattern.compile("\\d{1,3}");
 

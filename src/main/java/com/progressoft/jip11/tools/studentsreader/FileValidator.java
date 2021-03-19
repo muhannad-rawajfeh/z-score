@@ -9,9 +9,9 @@ public class FileValidator {
 
     public void validateFile(String path) {
         if (path == null) {
-            throw new StudentsReaderException("File cannot be null");
+            throw new StudentsReaderException("Path cannot be null");
         }
-        if (Files.notExists(Paths.get(path))) {
+        if (path.equals("") || Files.notExists(Paths.get(path))) {
             throw new StudentsReaderException("File does not exist");
         }
     }

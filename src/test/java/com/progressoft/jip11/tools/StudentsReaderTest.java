@@ -26,9 +26,9 @@ class StudentsReaderTest {
     }
 
     @Test
-    void givenNullFile_whenParse_thenThrowException() {
+    void givenNullPath_whenParse_thenThrowException() {
         String message = assertThrows(StudentsReaderException.class, () -> reader.parse(null)).getMessage();
-        assertEquals("File cannot be null", message);
+        assertEquals("Path cannot be null", message);
     }
 
     @Test
@@ -36,6 +36,17 @@ class StudentsReaderTest {
         String message = assertThrows(StudentsReaderException.class,
                 () -> reader.parse(dirPath + "file.csv")).getMessage();
         assertEquals("File does not exist", message);
+
+        String message2 = assertThrows(StudentsReaderException.class,
+                () -> reader.parse("")).getMessage();
+        assertEquals("File does not exist", message2);
+    }
+
+    @Test
+    void givenEmptyFile_whenParse_thenThrowException() {
+        String message = assertThrows(StudentsReaderException.class,
+                () -> reader.parse(dirPath + "empty-file.csv")).getMessage();
+        assertEquals("File is empty", message);
     }
 
     @Test
@@ -44,7 +55,7 @@ class StudentsReaderTest {
 
         String message = assertThrows(StudentsReaderException.class,
                 () -> reader.parse(path)).getMessage();
-        assertEquals("Invalid number of fields in line 2", message);
+        assertEquals("Invalid number of fields in line 3", message);
     }
 
     @Test
@@ -53,7 +64,7 @@ class StudentsReaderTest {
 
         String message = assertThrows(StudentsReaderException.class,
                 () -> reader.parse(path)).getMessage();
-        assertEquals("Invalid student_id in line 3", message);
+        assertEquals("Invalid student_id in line 4", message);
     }
 
     @Test
@@ -62,7 +73,7 @@ class StudentsReaderTest {
 
         String message = assertThrows(StudentsReaderException.class,
                 () -> reader.parse(path)).getMessage();
-        assertEquals("Invalid class_no in line 1", message);
+        assertEquals("Invalid class_no in line 2", message);
     }
 
     @Test
@@ -71,7 +82,7 @@ class StudentsReaderTest {
 
         String message = assertThrows(StudentsReaderException.class,
                 () -> reader.parse(path)).getMessage();
-        assertEquals("Invalid mark in line 3", message);
+        assertEquals("Invalid mark in line 4", message);
     }
 
     @Test
