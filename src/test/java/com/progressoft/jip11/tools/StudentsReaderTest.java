@@ -1,5 +1,6 @@
 package com.progressoft.jip11.tools;
 
+import com.progressoft.jip11.tools.objects.StudentInfo;
 import com.progressoft.jip11.tools.studentsreader.CsvReader;
 import com.progressoft.jip11.tools.studentsreader.StudentsReader;
 import com.progressoft.jip11.tools.studentsreader.StudentsReaderException;

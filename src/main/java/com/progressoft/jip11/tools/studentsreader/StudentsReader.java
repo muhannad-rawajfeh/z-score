@@ -1,8 +1,7 @@
 package com.progressoft.jip11.tools.studentsreader;
 
-import com.progressoft.jip11.tools.StudentInfo;
+import com.progressoft.jip11.tools.objects.StudentInfo;
 
-import java.nio.file.Path;
 import java.util.List;
 
 public interface StudentsReader {

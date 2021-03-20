@@ -1,6 +1,6 @@
 package com.progressoft.jip11.tools.studentsreader;
 
-import com.progressoft.jip11.tools.StudentInfo;
+import com.progressoft.jip11.tools.objects.StudentInfo;
 import com.progressoft.jip11.tools.studentsreader.dataformat.DataFormat;
 
 import java.io.BufferedReader;

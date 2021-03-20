@@ -1,5 +1,8 @@
-package com.progressoft.jip11.tools;
+package com.progressoft.jip11.tools.utilities;
 
+import com.progressoft.jip11.tools.objects.StudentInfo;
+
+import java.text.DecimalFormat;
 import java.util.Arrays;
 import java.util.List;
 
@@ -26,7 +29,7 @@ public class ZCalculator {
     }
 
     public double findVariance() {
-        double mean = (double) findSum() / getCount();
+        double mean = findMean();
         double sum = 0;
         for (StudentInfo s : studentsInfo) {
             sum += Math.pow(s.getMark() - mean, 2);
@@ -38,8 +41,27 @@ public class ZCalculator {
         return Math.sqrt(findVariance());
     }
 
+    public String findAllZscores() {
+        StringBuilder result = new StringBuilder();
+        DecimalFormat df = new DecimalFormat("###.##");
+        for (StudentInfo s : studentsInfo) {
+            double zScore = calcZscore(s.getMark());
+            result.append(s).append(",").append(df.format(zScore)).append("\n");
+        }
+        result.delete(result.length() - 1, result.length());
+        return result.toString();
+    }
+
     public int getCount() {
         return studentsInfo.size();
+    }
+
+    private double calcZscore(int mark) {
+        return (mark - findMean()) / findDeviation();
+    }
+
+    private double findMean() {
+        return (double) findSum() / getCount();
     }
 
     private int findSum() {

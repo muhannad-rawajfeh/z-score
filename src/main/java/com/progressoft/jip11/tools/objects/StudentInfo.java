@@ -1,4 +1,4 @@
-package com.progressoft.jip11.tools;
+package com.progressoft.jip11.tools.objects;
 
 import java.util.Objects;
 
