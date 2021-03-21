@@ -17,16 +17,29 @@ public class Application {
         StudentsReader studentsReader = new CsvReader(new StudentInfoFormat());
         List<StudentInfo> list = getFilePath(studentsReader);
         Menus menus = new Menus(list);
-        int choice = menus.getMainOption();
+        callMainMenu(menus);
+    }
+
+    private static void callMainMenu(Menus menus) {
+        String choice = menus.getMainOption();
         switch (choice) {
-            case 1:
+            case "1":
                 menus.displaySummary();
-            case 2:
+                callMainMenu(menus);
+            case "2":
                 menus.displaySpecificSummary();
-            case 3:
+                callMainMenu(menus);
+            case "3":
                 menus.displayZscores();
-            case 4:
+                callMainMenu(menus);
+            case "4":
                 menus.displaySpecificZscores();
+                callMainMenu(menus);
+            case "7":
+                System.exit(0);
+            default:
+                System.out.println("Invalid input, try again...");
+                callMainMenu(menus);
         }
     }
 

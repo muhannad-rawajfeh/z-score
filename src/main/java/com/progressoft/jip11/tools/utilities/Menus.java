@@ -19,20 +19,11 @@ public class Menus {
                 "-----------------------------------------------------");
     }
 
-    public int getMainOption() {
+    public String getMainOption() {
         displayMainMenu();
         Scanner scanner = new Scanner(System.in);
-        try {
-            int choice = scanner.nextInt();
-            if (choice > 0 && choice < 8) {
-                return choice;
-            }
-            System.out.println("Invalid input, please try again...");
-            return getMainOption();
-        } catch (Exception e) {
-            System.out.println("Invalid input, please try again...");
-            return getMainOption();
-        }
+        return scanner.next();
+
     }
 
     public void displaySummary() {
@@ -67,12 +58,6 @@ public class Menus {
                 findZscores(specificClassList);
             }
         }
-    }
-
-    @FunctionalInterface
-    interface MenuSupplier {
-
-        void supply();
     }
 
     private void findZscores(List<StudentInfo> list) {
@@ -118,5 +103,11 @@ public class Menus {
                 "5- Categorize students\n" +
                 "6- Categorize students in a specific class\n" +
                 "7- Exit\n");
+    }
+
+    @FunctionalInterface
+    interface MenuSupplier {
+
+        void supply();
     }
 }
