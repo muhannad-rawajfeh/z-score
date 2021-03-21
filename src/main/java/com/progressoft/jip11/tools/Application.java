@@ -7,13 +7,12 @@ import com.progressoft.jip11.tools.studentsreader.StudentsReaderException;
 import com.progressoft.jip11.tools.studentsreader.dataformat.StudentInfoFormat;
 import com.progressoft.jip11.tools.utilities.Menus;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Scanner;
 
 public class Application {
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         Menus.displayWelcome();
         StudentsReader studentsReader = new CsvReader(new StudentInfoFormat());
         List<StudentInfo> list = getFilePath(studentsReader);
@@ -21,7 +20,7 @@ public class Application {
         callMainMenu(menus);
     }
 
-    private static void callMainMenu(Menus menus) throws IOException {
+    private static void callMainMenu(Menus menus) {
         String choice = menus.getMainOption();
         switch (choice) {
             case "1":

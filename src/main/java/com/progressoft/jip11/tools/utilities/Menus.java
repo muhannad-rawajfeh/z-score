@@ -3,6 +3,7 @@ package com.progressoft.jip11.tools.utilities;
 import com.progressoft.jip11.tools.objects.StudentInfo;
 import com.progressoft.jip11.tools.studentswriter.CsvWriter;
 import com.progressoft.jip11.tools.studentswriter.StudentsWriter;
+import com.progressoft.jip11.tools.studentswriter.StudentsWriterException;
 
 import java.io.IOException;
 import java.util.List;
@@ -44,7 +45,7 @@ public class Menus {
         supplyMenu(this::displaySpecificZScores, 2);
     }
 
-    public void categorizeStudents() throws IOException {
+    public void categorizeStudents() {
         System.out.println("Enter Elite Deviations: ");
         double eliteDev = getDev();
         System.out.println("Enter Failed Deviations: ");
@@ -72,7 +73,11 @@ public class Menus {
             if (answer.equalsIgnoreCase("yes")) {
                 String categories = listUtility.findAllCategories(result, eliteDev, failedDev);
                 StudentsWriter writer = new CsvWriter();
-                writer.write(categories);
+                try {
+                    writer.write(categories);
+                } catch (IOException e) {
+                    throw new StudentsWriterException(e.getMessage(), e);
+                }
             }
         }
     }
