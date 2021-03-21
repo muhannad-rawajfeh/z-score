@@ -41,11 +41,11 @@ public class ZCalculator {
         return Math.sqrt(findVariance());
     }
 
-    public String findAllZscores() {
+    public String findAllZScores() {
         StringBuilder result = new StringBuilder();
         DecimalFormat df = new DecimalFormat("###.##");
         for (StudentInfo s : studentsInfo) {
-            double zScore = calcZscore(s.getMark());
+            double zScore = calcZScore(s.getMark());
             result.append(s).append(",").append(df.format(zScore)).append("\n");
         }
         result.delete(result.length() - 1, result.length());
@@ -56,7 +56,7 @@ public class ZCalculator {
         return studentsInfo.size();
     }
 
-    private double calcZscore(int mark) {
+    private double calcZScore(int mark) {
         return (mark - findMean()) / findDeviation();
     }
 

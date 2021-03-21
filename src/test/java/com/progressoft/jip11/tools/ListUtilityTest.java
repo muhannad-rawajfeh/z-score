@@ -1,7 +1,11 @@
 package com.progressoft.jip11.tools;
 
 import com.progressoft.jip11.tools.objects.StudentInfo;
+import com.progressoft.jip11.tools.studentsreader.CsvReader;
+import com.progressoft.jip11.tools.studentsreader.StudentsReader;
+import com.progressoft.jip11.tools.studentsreader.dataformat.StudentInfoFormat;
 import com.progressoft.jip11.tools.utilities.ListUtility;
+import com.progressoft.jip11.tools.utilities.ZCalculator;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -14,7 +18,7 @@ class ListUtilityTest {
     ListUtility listUtility = new ListUtility();
 
     @Test
-    void givenClassNo_whenIsExist_ReturnIfExists() {
+    void givenClassNo_whenIsExist_returnIfExists() {
         List<StudentInfo> studentsInfo = new ArrayList<>();
         StudentInfo s1 = new StudentInfo("123456789", 'A', 60);
         StudentInfo s2 = new StudentInfo("987654321", 'B', 80);
@@ -25,7 +29,7 @@ class ListUtilityTest {
     }
 
     @Test
-    void givenClassNoAndList_whenGetAllInClass_ReturnListOfAllInThatClass() {
+    void givenClassNoAndList_whenGetAllInClass_returnListOfAllInThatClass() {
         List<StudentInfo> given = new ArrayList<>();
         StudentInfo s1 = new StudentInfo("123456780", 'A', 70);
         StudentInfo s2 = new StudentInfo("987654321", 'B', 80);
@@ -43,6 +47,47 @@ class ListUtilityTest {
         expected.add(e2);
 
         List<StudentInfo> result = listUtility.getAllInClass('a', given);
+
+        assertEquals(expected, result);
+    }
+
+    @Test
+    void givenArrayOfZScores_whenCountDeviations_returnNoOfEachCategory() {
+        StudentsReader studentsReader = new CsvReader(new StudentInfoFormat());
+        List<StudentInfo> list = studentsReader.parse("src/test/resources/z-calc.csv");
+        ZCalculator zCalculator = new ZCalculator(list);
+        String[] given = zCalculator.findAllZScores().split("[,\\n]");
+
+        int count1 = listUtility.countElite(given, 0.6);
+        assertEquals(2, count1);
+
+        int count2 = listUtility.countFailed(given, 0);
+        assertEquals(3, count2);
+
+        int count3 = listUtility.countPassed(given, 1.2, -0.6);
+        assertEquals(2, count3);
+
+        int passingScore = listUtility.getPassingScore(given, 1.2, -0.6);
+        assertEquals(15, passingScore);
+
+        int eliteScore = listUtility.getEliteScore(given);
+        assertEquals(25, eliteScore);
+    }
+
+    @Test
+    void givenArrayOfZScores_whenFindAllCategories_returnCategoryForEachStudent() {
+        StudentsReader studentsReader = new CsvReader(new StudentInfoFormat());
+        List<StudentInfo> list = studentsReader.parse("src/test/resources/z-calc.csv");
+        ZCalculator zCalculator = new ZCalculator(list);
+        String[] given = zCalculator.findAllZScores().split("[,\\n]");
+
+        String result = listUtility.findAllCategories(given, 1.2, -0.6);
+
+        String expected = "123456789,A,5,-1.26,Failed\n" +
+                "987654321,B,10,-0.63,Failed\n" +
+                "123456780,A,15,0,Passed\n" +
+                "987654320,B,20,0.63,Passed\n" +
+                "987654322,B,25,1.26,Elite";
 
         assertEquals(expected, result);
     }

@@ -50,7 +50,7 @@ class ZCalculatorTest {
     }
 
     @Test
-    void givenFile_whenFindZscore_thenReturnZscoreForEachStudent() {
+    void givenFile_whenFindZScore_thenReturnZScoreForEachStudent() {
         studentsInfo = studentsReader.parse("src/test/resources/z-calc.csv");
         zCalculator = new ZCalculator(studentsInfo);
         String expected = "123456789,A,5,-1.26\n" +
@@ -58,7 +58,7 @@ class ZCalculatorTest {
                 "123456780,A,15,0\n" +
                 "987654320,B,20,0.63\n" +
                 "987654322,B,25,1.26";
-        String result = zCalculator.findAllZscores();
+        String result = zCalculator.findAllZScores();
         assertEquals(expected, result);
     }
 }
