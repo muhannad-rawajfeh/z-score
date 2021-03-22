@@ -27,16 +27,19 @@ public class Application {
                 menus.displaySummary();
                 callMainMenu(menus);
             case "2":
-                menus.displaySpecificSummary();
+                menus.disSpecSummary();
                 callMainMenu(menus);
             case "3":
                 menus.displayZScores();
                 callMainMenu(menus);
             case "4":
-                menus.displaySpecificZScores();
+                menus.disSpecZScores();
                 callMainMenu(menus);
             case "5":
-                menus.categorizeStudents();
+                menus.catStudents();
+                callMainMenu(menus);
+            case "6":
+                menus.catSpecClass();
                 callMainMenu(menus);
             case "7":
                 System.exit(0);

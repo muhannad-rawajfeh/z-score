@@ -1,6 +1,7 @@
 package com.progressoft.jip11.tools.utilities;
 
 import com.progressoft.jip11.tools.objects.StudentInfo;
+import com.progressoft.jip11.tools.studentsreader.StudentsReader;
 
 import java.text.DecimalFormat;
 import java.util.Arrays;
@@ -8,6 +9,7 @@ import java.util.List;
 
 public class ZCalculator {
 
+    private static final DecimalFormat df = new DecimalFormat("###.##");
     private final List<StudentInfo> studentsInfo;
 
     public ZCalculator(List<StudentInfo> studentsInfo) {
@@ -34,26 +36,28 @@ public class ZCalculator {
         for (StudentInfo s : studentsInfo) {
             sum += Math.pow(s.getMark() - mean, 2);
         }
-        return sum / (getCount() - 1);
+        return format(sum / (getCount() - 1));
     }
 
     public double findDeviation() {
-        return Math.sqrt(findVariance());
+        return format(Math.sqrt(findVariance()));
     }
 
     public String findAllZScores() {
         StringBuilder result = new StringBuilder();
-        DecimalFormat df = new DecimalFormat("###.##");
         for (StudentInfo s : studentsInfo) {
             double zScore = calcZScore(s.getMark());
             result.append(s).append(",").append(df.format(zScore)).append("\n");
         }
-        result.delete(result.length() - 1, result.length());
         return result.toString();
     }
 
     public int getCount() {
         return studentsInfo.size();
+    }
+
+    private double format(double value) {
+        return Double.parseDouble(df.format(value));
     }
 
     private double calcZScore(int mark) {

@@ -11,10 +11,10 @@ import java.util.Scanner;
 
 public class Menus {
 
-    private final List<StudentInfo> list;
+    private final List<StudentInfo> allStudents;
 
     public Menus(List<StudentInfo> list) {
-        this.list = list;
+        this.allStudents = list;
     }
 
     public static void displayWelcome() {
@@ -30,31 +30,58 @@ public class Menus {
     }
 
     public void displaySummary() {
-        findSummary(list);
+        doDisplaySummary(allStudents);
     }
 
-    public void displaySpecificSummary() {
-        supplyMenu(this::displaySpecificZScores, 1);
+    public void disSpecSummary() {
+        supplyMenu(this::disSpecSummary, 1);
     }
 
     public void displayZScores() {
-        findZScores(list);
+        doDisplayZScores(allStudents);
     }
 
-    public void displaySpecificZScores() {
-        supplyMenu(this::displaySpecificZScores, 2);
+    public void disSpecZScores() {
+        supplyMenu(this::disSpecZScores, 2);
     }
 
-    public void categorizeStudents() {
+    public void catStudents() {
+        doCatStudents(allStudents);
+    }
+
+    public void catSpecClass() {
+        supplyMenu(this::catSpecClass, 3);
+    }
+
+    private void supplyMenu(MenuSupplier menuSupplier, int methodNo) {
+        System.out.println("Enter class_no:");
+        String input = getClassNo();
+        char classNo = input.charAt(0);
+        ListUtility listUtility = new ListUtility();
+        if (!listUtility.isClassExist(classNo, allStudents)) {
+            System.out.println("Classroom does not exist, try again...");
+            menuSupplier.supply();
+        } else {
+            List<StudentInfo> specificClassList = listUtility.getAllInClass(classNo, allStudents);
+            if (methodNo == 1) {
+                doDisplaySummary(specificClassList);
+            } else if (methodNo == 2) {
+                doDisplayZScores(specificClassList);
+            } else if (methodNo == 3) {
+                doCatStudents(specificClassList);
+            }
+        }
+    }
+
+    private void doCatStudents(List<StudentInfo> list) {
         System.out.println("Enter Elite Deviations: ");
         double eliteDev = getDev();
         System.out.println("Enter Failed Deviations: ");
         double failedDev = getDev();
         if (failedDev > eliteDev) {
             System.out.println("Failed deviations cannot be higher than Elite deviations, try again...");
-            categorizeStudents();
+            catStudents();
         } else {
-            displaySummary();
             ZCalculator zCalculator = new ZCalculator(list);
             String[] result = zCalculator.findAllZScores().split("[,\\n]");
             ListUtility listUtility = new ListUtility();
@@ -63,11 +90,7 @@ public class Menus {
             int c3 = listUtility.countFailed(result, failedDev);
             int c4 = listUtility.getPassingScore(result, eliteDev, failedDev);
             int c5 = listUtility.getEliteScore(result);
-            System.out.println("Elite students count: " + c1 + "\n" +
-                    "Passed students count: " + c2 + "\n" +
-                    "Failed students count: " + c3 + "\n" +
-                    "Passing score: " + c4 + "\n" +
-                    "Elite score: " + c5 + "\n");
+            printSummary(list, c1, c2, c3, c4, c5);
             System.out.println("Do you want to save the results to a file (yes/no):");
             String answer = getAnswer();
             if (answer.equalsIgnoreCase("yes")) {
@@ -82,25 +105,16 @@ public class Menus {
         }
     }
 
-    private void supplyMenu(MenuSupplier menuSupplier, int methodNo) {
-        System.out.println("Enter class_no:");
-        String input = getClassNo();
-        char classNo = input.charAt(0);
-        ListUtility listUtility = new ListUtility();
-        if (!listUtility.isClassExist(classNo, list)) {
-            System.out.println("Classroom does not exist, try again...");
-            menuSupplier.supply();
-        } else {
-            List<StudentInfo> specificClassList = listUtility.getAllInClass(classNo, list);
-            if (methodNo == 1) {
-                findSummary(specificClassList);
-            } else if (methodNo == 2) {
-                findZScores(specificClassList);
-            }
-        }
+    private void printSummary(List<StudentInfo> list, int c1, int c2, int c3, int c4, int c5) {
+        doDisplaySummary(list);
+        System.out.println("Elite students count: " + c1 + "\n" +
+                "Passed students count: " + c2 + "\n" +
+                "Failed students count: " + c3 + "\n" +
+                "Passing score: " + c4 + "\n" +
+                "Elite score: " + c5 + "\n");
     }
 
-    private void findZScores(List<StudentInfo> list) {
+    private void doDisplayZScores(List<StudentInfo> list) {
         System.out.format("%15s%15s%15s%15s%n", "Student_ID", "Classroom", "Mark", "Z-Score");
         ZCalculator zCalculator = new ZCalculator(list);
         String[] result = zCalculator.findAllZScores().split("[,\\n]");
@@ -109,7 +123,7 @@ public class Menus {
         }
     }
 
-    private void findSummary(List<StudentInfo> list) {
+    private void doDisplaySummary(List<StudentInfo> list) {
         ZCalculator zCalculator = new ZCalculator(list);
         double median = zCalculator.findMedian();
         double variance = zCalculator.findVariance();

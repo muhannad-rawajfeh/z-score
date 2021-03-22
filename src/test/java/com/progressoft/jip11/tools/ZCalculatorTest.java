@@ -46,7 +46,7 @@ class ZCalculatorTest {
         studentsInfo = studentsReader.parse("src/test/resources/z-calc.csv");
         zCalculator = new ZCalculator(studentsInfo);
         double result = zCalculator.findDeviation();
-        assertEquals(7.905694150420948, result);
+        assertEquals(7.91, result);
     }
 
     @Test
@@ -57,7 +57,7 @@ class ZCalculatorTest {
                 "987654321,B,10,-0.63\n" +
                 "123456780,A,15,0\n" +
                 "987654320,B,20,0.63\n" +
-                "987654322,B,25,1.26";
+                "987654322,B,25,1.26\n";
         String result = zCalculator.findAllZScores();
         assertEquals(expected, result);
     }

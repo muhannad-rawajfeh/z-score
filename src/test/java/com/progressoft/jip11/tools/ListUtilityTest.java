@@ -18,7 +18,7 @@ class ListUtilityTest {
     ListUtility listUtility = new ListUtility();
 
     @Test
-    void givenClassNo_whenIsExist_returnIfExists() {
+    void givenClassNo_whenIsExist_thenReturnIfExists() {
         List<StudentInfo> studentsInfo = new ArrayList<>();
         StudentInfo s1 = new StudentInfo("123456789", 'A', 60);
         StudentInfo s2 = new StudentInfo("987654321", 'B', 80);
@@ -29,7 +29,7 @@ class ListUtilityTest {
     }
 
     @Test
-    void givenClassNoAndList_whenGetAllInClass_returnListOfAllInThatClass() {
+    void givenClassNoAndList_whenGetAllInClass_theReturnListOfAllInThatClass() {
         List<StudentInfo> given = new ArrayList<>();
         StudentInfo s1 = new StudentInfo("123456780", 'A', 70);
         StudentInfo s2 = new StudentInfo("987654321", 'B', 80);
@@ -52,7 +52,7 @@ class ListUtilityTest {
     }
 
     @Test
-    void givenArrayOfZScores_whenCountDeviations_returnNoOfEachCategory() {
+    void givenArrayOfZScores_whenCountDeviations_thenReturnNoOfEachCategory() {
         StudentsReader studentsReader = new CsvReader(new StudentInfoFormat());
         List<StudentInfo> list = studentsReader.parse("src/test/resources/z-calc.csv");
         ZCalculator zCalculator = new ZCalculator(list);
@@ -75,7 +75,7 @@ class ListUtilityTest {
     }
 
     @Test
-    void givenArrayOfZScores_whenFindAllCategories_returnCategoryForEachStudent() {
+    void givenArrayOfZScores_whenFindAllCategories_thenReturnCategoryForEachStudent() {
         StudentsReader studentsReader = new CsvReader(new StudentInfoFormat());
         List<StudentInfo> list = studentsReader.parse("src/test/resources/z-calc.csv");
         ZCalculator zCalculator = new ZCalculator(list);
@@ -87,7 +87,7 @@ class ListUtilityTest {
                 "987654321,B,10,-0.63,Failed\n" +
                 "123456780,A,15,0,Passed\n" +
                 "987654320,B,20,0.63,Passed\n" +
-                "987654322,B,25,1.26,Elite";
+                "987654322,B,25,1.26,Elite\n";
 
         assertEquals(expected, result);
     }

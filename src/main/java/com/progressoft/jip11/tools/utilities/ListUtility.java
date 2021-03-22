@@ -91,7 +91,6 @@ public class ListUtility {
             stringBuilder.append(zScores[i]).append(",").append(zScores[i+1]).append(",")
                     .append(zScores[i+2]).append(",").append(zScores[i+3]).append(",").append(category).append("\n");
         }
-        stringBuilder.delete(stringBuilder.length() - 1, stringBuilder.length());
         return stringBuilder.toString();
     }
 
