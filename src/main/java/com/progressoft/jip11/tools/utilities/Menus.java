@@ -99,7 +99,7 @@ public class Menus {
                 try {
                     writer.write(categories, fileName);
                 } catch (StudentsWriterException e) {
-                    System.out.println(e.getMessage() + ", try again...");;
+                    System.out.println(e.getMessage() + ", try again...");
                 }
             }
         }
