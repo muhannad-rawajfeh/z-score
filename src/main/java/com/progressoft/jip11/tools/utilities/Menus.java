@@ -18,36 +18,36 @@ public class Menus {
 
     public static void displayWelcome() {
         System.out.println("-----------------------------------------------------\n" +
-                "Welcome to Z-Score app. Please insert your file path:\n" +
+                "Welcome to Z-Score App. Please insert your file path:\n" +
                 "-----------------------------------------------------");
     }
 
-    public void start() {
+    public void goToMainMenu() {
         String choice = getOptionNo();
         switch (choice) {
             case "1":
                 displaySummary();
-                start();
+                goToMainMenu();
             case "2":
                 disSpecSummary();
-                start();
+                goToMainMenu();
             case "3":
                 displayZScores();
-                start();
+                goToMainMenu();
             case "4":
                 disSpecZScores();
-                start();
+                goToMainMenu();
             case "5":
                 catStudents();
-                start();
+                goToMainMenu();
             case "6":
                 catSpecClass();
-                start();
+                goToMainMenu();
             case "7":
                 System.exit(0);
             default:
                 System.out.println("Invalid input, try again...");
-                start();
+                goToMainMenu();
         }
     }
 
@@ -62,7 +62,7 @@ public class Menus {
     }
 
     private void disSpecSummary() {
-        supplyMenu(this::disSpecSummary, 1);
+        consumeMenu(this::disSpecSummary, 1);
     }
 
     private void displayZScores() {
@@ -70,7 +70,7 @@ public class Menus {
     }
 
     private void disSpecZScores() {
-        supplyMenu(this::disSpecZScores, 2);
+        consumeMenu(this::disSpecZScores, 2);
     }
 
     private void catStudents() {
@@ -78,17 +78,17 @@ public class Menus {
     }
 
     private void catSpecClass() {
-        supplyMenu(this::catSpecClass, 3);
+        consumeMenu(this::catSpecClass, 3);
     }
 
-    private void supplyMenu(MenuSupplier menuSupplier, int methodNo) {
+    private void consumeMenu(MenuConsumer menuConsumer, int methodNo) {
         System.out.println("Enter class_no:");
         String input = getClassNo();
         char classNo = input.charAt(0);
         ListUtility listUtility = new ListUtility();
         if (!listUtility.isClassExist(classNo, allStudents)) {
             System.out.println("Classroom does not exist, try again...");
-            menuSupplier.supply();
+            menuConsumer.consume();
         } else {
             List<StudentInfo> specificClassList = listUtility.getAllInClass(classNo, allStudents);
             if (methodNo == 1) {
@@ -102,9 +102,9 @@ public class Menus {
     }
 
     private void doCatStudents(List<StudentInfo> list) {
-        System.out.println("Enter Elite Deviations: ");
+        System.out.println("Enter Elite Deviations:");
         double eliteDev = getDev();
-        System.out.println("Enter Failed Deviations: ");
+        System.out.println("Enter Failed Deviations:");
         double failedDev = getDev();
         if (failedDev >= eliteDev) {
             System.out.println("Failed deviations cannot be higher than or equal Elite deviations, try again...");
@@ -124,13 +124,18 @@ public class Menus {
             if (answer.equalsIgnoreCase("yes")) {
                 String categories = listUtility.findAllCategories(result, eliteDev, failedDev);
                 StudentsWriter writer = new CsvWriter();
-                String fileName = getFileName();
-                try {
-                    writer.write(categories, fileName);
-                } catch (StudentsWriterException e) {
-                    System.out.println(e.getMessage() + ", try again...");
-                }
+                saveToFile(categories, writer);
             }
+        }
+    }
+
+    private void saveToFile(String categories, StudentsWriter writer) {
+        String fileName = getFileName();
+        try {
+            writer.write(categories, fileName);
+        } catch (StudentsWriterException e) {
+            System.out.println(e.getMessage() + ", try again...");
+            saveToFile(categories, writer);
         }
     }
 
@@ -219,8 +224,8 @@ public class Menus {
     }
 
     @FunctionalInterface
-    interface MenuSupplier {
+    interface MenuConsumer {
 
-        void supply();
+        void consume();
     }
 }

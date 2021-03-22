@@ -17,7 +17,7 @@ public class Main {
         StudentsReader studentsReader = new CsvReader(new StudentInfoFormat());
         List<StudentInfo> list = getFilePath(studentsReader);
         Menus menus = new Menus(list);
-        menus.start();
+        menus.goToMainMenu();
     }
 
     private static List<StudentInfo> getFilePath(StudentsReader studentsReader) {
