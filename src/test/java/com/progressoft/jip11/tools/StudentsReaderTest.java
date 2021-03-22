@@ -30,24 +30,34 @@ class StudentsReaderTest {
     void givenNullPath_whenParse_thenThrowException() {
         String message = assertThrows(StudentsReaderException.class,
                 () -> reader.parse(null)).getMessage();
+
         assertEquals("Path cannot be null", message);
     }
 
     @Test
     void givenNoneExistingFile_whenParse_thenThrowException() {
+        String path1 = dirPath + "file.csv";
+
         String message = assertThrows(StudentsReaderException.class,
-                () -> reader.parse(dirPath + "file.csv")).getMessage();
+                () -> reader.parse(path1)).getMessage();
+
         assertEquals("File does not exist", message);
 
+        String path2 = "";
+
         String message2 = assertThrows(StudentsReaderException.class,
-                () -> reader.parse("")).getMessage();
+                () -> reader.parse(path2)).getMessage();
+
         assertEquals("File does not exist", message2);
     }
 
     @Test
     void givenEmptyFile_whenParse_thenThrowException() {
+        String path = dirPath + "empty-file.csv";
+
         String message = assertThrows(StudentsReaderException.class,
-                () -> reader.parse(dirPath + "empty-file.csv")).getMessage();
+                () -> reader.parse(path)).getMessage();
+
         assertEquals("File is empty", message);
     }
 
@@ -57,6 +67,7 @@ class StudentsReaderTest {
 
         String message = assertThrows(StudentsReaderException.class,
                 () -> reader.parse(path)).getMessage();
+
         assertEquals("Invalid number of fields in line 3", message);
     }
 
@@ -66,6 +77,7 @@ class StudentsReaderTest {
 
         String message = assertThrows(StudentsReaderException.class,
                 () -> reader.parse(path)).getMessage();
+
         assertEquals("Invalid student_id in line 4", message);
     }
 
@@ -75,6 +87,7 @@ class StudentsReaderTest {
 
         String message = assertThrows(StudentsReaderException.class,
                 () -> reader.parse(path)).getMessage();
+
         assertEquals("Invalid class_no in line 2", message);
     }
 
@@ -84,21 +97,22 @@ class StudentsReaderTest {
 
         String message = assertThrows(StudentsReaderException.class,
                 () -> reader.parse(path)).getMessage();
+
         assertEquals("Invalid mark in line 4", message);
     }
 
     @Test
     void givenValidFile_whenParse_thenReturnListOfStudentsInfo() {
+        String path = dirPath + "valid-file.csv";
+
+        List<StudentInfo> result = reader.parse(path);
+
         List<StudentInfo> expected = new ArrayList<>();
         StudentInfo s1 = new StudentInfo("123456789", 'A', 60);
         StudentInfo s2 = new StudentInfo("987654321", 'B', 80);
         expected.add(s1);
         expected.add(s2);
 
-        String path = dirPath + "valid-file.csv";
-
-        List<StudentInfo> result = reader.parse(path);
-
-        assertEquals(result, expected);
+        assertEquals(expected, result);
     }
 }

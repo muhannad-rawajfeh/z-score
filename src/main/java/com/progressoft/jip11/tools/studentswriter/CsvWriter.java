@@ -11,7 +11,7 @@ public class CsvWriter implements StudentsWriter {
 
     @Override
     public void write(String info, String fileName) {
-        Path path = Paths.get("./" + fileName + ".xls");
+        Path path = Paths.get(fileName + ".xls");
         createFile(path);
         try (BufferedWriter writer = Files.newBufferedWriter(path)) {
             String header = "Student_id,class_no,mark,z_score,category\n";

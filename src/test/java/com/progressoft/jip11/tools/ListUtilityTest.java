@@ -18,18 +18,19 @@ class ListUtilityTest {
     ListUtility listUtility = new ListUtility();
 
     @Test
-    void givenClassNo_whenIsExist_thenReturnIfExists() {
+    void givenListOfStudentsInfo_whenIsClassExist_thenReturnIfClassNoExists() {
         List<StudentInfo> studentsInfo = new ArrayList<>();
         StudentInfo s1 = new StudentInfo("123456789", 'A', 60);
         StudentInfo s2 = new StudentInfo("987654321", 'B', 80);
         studentsInfo.add(s1);
         studentsInfo.add(s2);
+
         assertTrue(listUtility.isClassExist('a', studentsInfo));
         assertFalse(listUtility.isClassExist('c', studentsInfo));
     }
 
     @Test
-    void givenClassNoAndList_whenGetAllInClass_theReturnListOfAllInThatClass() {
+    void givenListOfStudentsInfo_whenGetAllInClass_theReturnListOfStudentsInfoInGivenClass() {
         List<StudentInfo> given = new ArrayList<>();
         StudentInfo s1 = new StudentInfo("123456780", 'A', 70);
         StudentInfo s2 = new StudentInfo("987654321", 'B', 80);
@@ -40,13 +41,13 @@ class ListUtilityTest {
         given.add(s3);
         given.add(s4);
 
+        List<StudentInfo> result = listUtility.getAllInClass('a', given);
+
         List<StudentInfo> expected = new ArrayList<>();
         StudentInfo e1 = new StudentInfo("123456780", 'A', 70);
         StudentInfo e2 = new StudentInfo("123456789", 'A', 60);
         expected.add(e1);
         expected.add(e2);
-
-        List<StudentInfo> result = listUtility.getAllInClass('a', given);
 
         assertEquals(expected, result);
     }
@@ -56,6 +57,7 @@ class ListUtilityTest {
         StudentsReader studentsReader = new CsvReader(new StudentInfoFormat());
         List<StudentInfo> list = studentsReader.parse("src/test/resources/z-calc.csv");
         ZCalculator zCalculator = new ZCalculator(list);
+
         String[] given = zCalculator.findAllZScores().split("[,\\n]");
 
         int count1 = listUtility.countElite(given, 0.6);
@@ -79,6 +81,7 @@ class ListUtilityTest {
         StudentsReader studentsReader = new CsvReader(new StudentInfoFormat());
         List<StudentInfo> list = studentsReader.parse("src/test/resources/z-calc.csv");
         ZCalculator zCalculator = new ZCalculator(list);
+
         String[] given = zCalculator.findAllZScores().split("[,\\n]");
 
         String result = listUtility.findAllCategories(given, 1.2, -0.6);

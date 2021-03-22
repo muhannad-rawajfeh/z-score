@@ -22,33 +22,62 @@ public class Menus {
                 "-----------------------------------------------------");
     }
 
-    public String getMainOption() {
+    public void start() {
+        String choice = getOptionNo();
+        switch (choice) {
+            case "1":
+                displaySummary();
+                start();
+            case "2":
+                disSpecSummary();
+                start();
+            case "3":
+                displayZScores();
+                start();
+            case "4":
+                disSpecZScores();
+                start();
+            case "5":
+                catStudents();
+                start();
+            case "6":
+                catSpecClass();
+                start();
+            case "7":
+                System.exit(0);
+            default:
+                System.out.println("Invalid input, try again...");
+                start();
+        }
+    }
+
+    private String getOptionNo() {
         displayMainMenu();
         Scanner scanner = new Scanner(System.in);
         return scanner.next();
     }
 
-    public void displaySummary() {
+    private void displaySummary() {
         doDisplaySummary(allStudents);
     }
 
-    public void disSpecSummary() {
+    private void disSpecSummary() {
         supplyMenu(this::disSpecSummary, 1);
     }
 
-    public void displayZScores() {
+    private void displayZScores() {
         doDisplayZScores(allStudents);
     }
 
-    public void disSpecZScores() {
+    private void disSpecZScores() {
         supplyMenu(this::disSpecZScores, 2);
     }
 
-    public void catStudents() {
+    private void catStudents() {
         doCatStudents(allStudents);
     }
 
-    public void catSpecClass() {
+    private void catSpecClass() {
         supplyMenu(this::catSpecClass, 3);
     }
 
@@ -77,8 +106,8 @@ public class Menus {
         double eliteDev = getDev();
         System.out.println("Enter Failed Deviations: ");
         double failedDev = getDev();
-        if (failedDev > eliteDev) {
-            System.out.println("Failed deviations cannot be higher than Elite deviations, try again...");
+        if (failedDev >= eliteDev) {
+            System.out.println("Failed deviations cannot be higher than or equal Elite deviations, try again...");
             catStudents();
         } else {
             ZCalculator zCalculator = new ZCalculator(list);
