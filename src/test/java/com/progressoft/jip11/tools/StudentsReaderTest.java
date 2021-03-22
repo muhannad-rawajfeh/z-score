@@ -28,7 +28,8 @@ class StudentsReaderTest {
 
     @Test
     void givenNullPath_whenParse_thenThrowException() {
-        String message = assertThrows(StudentsReaderException.class, () -> reader.parse(null)).getMessage();
+        String message = assertThrows(StudentsReaderException.class,
+                () -> reader.parse(null)).getMessage();
         assertEquals("Path cannot be null", message);
     }
 
