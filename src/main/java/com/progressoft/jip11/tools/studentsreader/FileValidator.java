@@ -1,9 +1,11 @@
 package com.progressoft.jip11.tools.studentsreader;
 
+import com.progressoft.jip11.tools.objects.StudentInfo;
 import com.progressoft.jip11.tools.studentsreader.dataformat.DataFormat;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.List;
 
 public class FileValidator {
 
@@ -13,6 +15,12 @@ public class FileValidator {
         }
         if (path.equals("") || Files.notExists(Paths.get(path))) {
             throw new StudentsReaderException("File does not exist");
+        }
+    }
+
+    public void isEmptyFile(List<StudentInfo> list) {
+        if (list.isEmpty()) {
+            throw new StudentsReaderException("File is empty");
         }
     }
 

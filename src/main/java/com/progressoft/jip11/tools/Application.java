@@ -54,7 +54,7 @@ public class Application {
         try {
             return studentsReader.parse(scanner.next());
         } catch (StudentsReaderException e) {
-            System.out.println(e.getMessage() + ", " + "try again...");
+            System.out.println(e.getMessage() + ", try again...");
             return getFilePath(studentsReader);
         }
     }

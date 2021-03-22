@@ -5,7 +5,6 @@ import com.progressoft.jip11.tools.studentswriter.CsvWriter;
 import com.progressoft.jip11.tools.studentswriter.StudentsWriter;
 import com.progressoft.jip11.tools.studentswriter.StudentsWriterException;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -96,13 +95,20 @@ public class Menus {
             if (answer.equalsIgnoreCase("yes")) {
                 String categories = listUtility.findAllCategories(result, eliteDev, failedDev);
                 StudentsWriter writer = new CsvWriter();
+                String fileName = getFileName();
                 try {
-                    writer.write(categories);
-                } catch (IOException e) {
-                    throw new StudentsWriterException(e.getMessage(), e);
+                    writer.write(categories, fileName);
+                } catch (StudentsWriterException e) {
+                    System.out.println(e.getMessage() + ", try again...");;
                 }
             }
         }
+    }
+
+    private String getFileName() {
+        System.out.println("Name your file:");
+        Scanner scanner = new Scanner(System.in);
+        return scanner.next();
     }
 
     private void printSummary(List<StudentInfo> list, int c1, int c2, int c3, int c4, int c5) {
