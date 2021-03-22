@@ -1,5 +1,6 @@
 package com.progressoft.jip11.tools.studentsreader;
 
+import com.progressoft.jip11.tools.exceptions.StudentsReaderException;
 import com.progressoft.jip11.tools.objects.StudentInfo;
 import com.progressoft.jip11.tools.studentsreader.dataformat.DataFormat;
 

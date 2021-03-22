@@ -1,5 +1,7 @@
 package com.progressoft.jip11.tools.studentswriter;
 
+import com.progressoft.jip11.tools.exceptions.StudentsWriterException;
+
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.nio.file.FileAlreadyExistsException;

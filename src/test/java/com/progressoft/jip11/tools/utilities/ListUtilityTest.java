@@ -1,11 +1,9 @@
-package com.progressoft.jip11.tools;
+package com.progressoft.jip11.tools.utilities;
 
 import com.progressoft.jip11.tools.objects.StudentInfo;
 import com.progressoft.jip11.tools.studentsreader.CsvReader;
 import com.progressoft.jip11.tools.studentsreader.StudentsReader;
 import com.progressoft.jip11.tools.studentsreader.dataformat.StudentInfoFormat;
-import com.progressoft.jip11.tools.utilities.ListUtility;
-import com.progressoft.jip11.tools.utilities.ZCalculator;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;

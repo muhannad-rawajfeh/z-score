@@ -1,4 +1,4 @@
-package com.progressoft.jip11.tools.studentsreader;
+package com.progressoft.jip11.tools.exceptions;
 
 public class StudentsReaderException extends RuntimeException {
 

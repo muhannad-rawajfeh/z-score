@@ -1,8 +1,6 @@
-package com.progressoft.jip11.tools;
+package com.progressoft.jip11.tools.studentswriter;
 
-import com.progressoft.jip11.tools.studentswriter.CsvWriter;
-import com.progressoft.jip11.tools.studentswriter.StudentsWriter;
-import com.progressoft.jip11.tools.studentswriter.StudentsWriterException;
+import com.progressoft.jip11.tools.exceptions.StudentsWriterException;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -11,7 +9,8 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class StudentsWriterTest {
 

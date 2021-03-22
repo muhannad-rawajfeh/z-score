@@ -3,7 +3,7 @@ package com.progressoft.jip11.tools.utilities;
 import com.progressoft.jip11.tools.objects.StudentInfo;
 import com.progressoft.jip11.tools.studentswriter.CsvWriter;
 import com.progressoft.jip11.tools.studentswriter.StudentsWriter;
-import com.progressoft.jip11.tools.studentswriter.StudentsWriterException;
+import com.progressoft.jip11.tools.exceptions.StudentsWriterException;
 
 import java.util.List;
 import java.util.Scanner;

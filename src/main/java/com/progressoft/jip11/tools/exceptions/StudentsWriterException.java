@@ -1,4 +1,4 @@
-package com.progressoft.jip11.tools.studentswriter;
+package com.progressoft.jip11.tools.exceptions;
 
 public class StudentsWriterException extends RuntimeException {
 
