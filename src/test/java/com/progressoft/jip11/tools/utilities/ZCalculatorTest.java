@@ -46,7 +46,7 @@ class ZCalculatorTest {
     void givenFile_whenFindStandardDeviation_thenReturnStandardDeviation() {
         studentsInfo = studentsReader.parse("src/test/resources/z-calc.csv");
         zCalculator = new ZCalculator(studentsInfo);
-        double result = zCalculator.findDeviation();
+        double result = zCalculator.findStDeviation();
         assertEquals(7.91, result);
     }
 

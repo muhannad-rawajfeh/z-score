@@ -40,16 +40,16 @@ public class ZCalculator {
         return format(sum / (getCount() - 1));
     }
 
-    public double findDeviation() {
+    public double findStDeviation() {
         return format(Math.sqrt(findVariance()));
     }
 
     public List<StudentInfo> findAllZScores() {
         double mean = findMean();
-        double deviation = findDeviation();
+        double stDeviation = findStDeviation();
         List<StudentInfo> result = new ArrayList<>();
         for (StudentInfo s : studentsInfo) {
-            double zScore = calcZScore(s.getMark(), mean, deviation);
+            double zScore = calcZScore(s.getMark(), mean, stDeviation);
             StudentInfo studentInfo = new StudentInfo(new StudentBuilder(s.getId(), s.getClassNo(), s.getMark())
                     .setZScore(zScore));
             result.add(studentInfo);
@@ -65,8 +65,8 @@ public class ZCalculator {
         return Double.parseDouble(df.format(value));
     }
 
-    private double calcZScore(int mark, double mean, double deviation) {
-        return format((mark - mean) / deviation);
+    private double calcZScore(int mark, double mean, double stDeviation) {
+        return format((mark - mean) / stDeviation);
     }
 
     private double findMean() {

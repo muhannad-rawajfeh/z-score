@@ -110,22 +110,26 @@ public class Menus {
             System.out.println("Failed deviations cannot be higher than or equal Elite deviations, try again...");
             catStudents();
         } else {
-            ZCalculator zCalculator = new ZCalculator(list);
-            List<StudentInfo> result = zCalculator.findAllZScores();
-            ListUtility listUtility = new ListUtility();
-            int c1 = listUtility.countElite(result, eliteDev);
-            int c2 = listUtility.countPassed(result, eliteDev, failedDev);
-            int c3 = listUtility.countFailed(result, failedDev);
-            int c4 = listUtility.getPassingScore(result, eliteDev, failedDev);
-            int c5 = listUtility.getEliteScore(result);
-            printSummary(list, c1, c2, c3, c4, c5);
-            System.out.println("Do you want to save the results to a file (yes/no):");
-            String answer = getAnswer();
-            if (answer.equalsIgnoreCase("yes")) {
-                List<StudentInfo> categories = listUtility.findAllCategories(result, eliteDev, failedDev);
-                StudentsWriter writer = new CsvWriter();
-                saveToFile(categories, writer);
-            }
+            startCategorizing(list, eliteDev, failedDev);
+        }
+    }
+
+    private void startCategorizing(List<StudentInfo> list, double eliteDev, double failedDev) {
+        ZCalculator zCalculator = new ZCalculator(list);
+        List<StudentInfo> result = zCalculator.findAllZScores();
+        ListUtility listUtility = new ListUtility();
+        int c1 = listUtility.countElite(result, eliteDev);
+        int c2 = listUtility.countPassed(result, eliteDev, failedDev);
+        int c3 = listUtility.countFailed(result, failedDev);
+        int c4 = listUtility.getPassingScore(result, eliteDev, failedDev);
+        int c5 = listUtility.getEliteScore(result);
+        printSummary(list, c1, c2, c3, c4, c5);
+        System.out.println("Do you want to save the results to a file (yes/no):");
+        String answer = getAnswer();
+        if (answer.equalsIgnoreCase("yes")) {
+            List<StudentInfo> categories = listUtility.findAllCategories(result, eliteDev, failedDev);
+            StudentsWriter writer = new CsvWriter();
+            saveToFile(categories, writer);
         }
     }
 
@@ -167,7 +171,7 @@ public class Menus {
         ZCalculator zCalculator = new ZCalculator(list);
         double median = zCalculator.findMedian();
         double variance = zCalculator.findVariance();
-        double deviation = zCalculator.findDeviation();
+        double deviation = zCalculator.findStDeviation();
         int count = zCalculator.getCount();
         System.out.println("Median: " + median + "\n" +
                 "Variance: " + variance + "\n" +
