@@ -1,6 +1,8 @@
 package com.progressoft.jip11.tools.studentswriter;
 
 import com.progressoft.jip11.tools.exceptions.StudentsWriterException;
+import com.progressoft.jip11.tools.objects.StudentBuilder;
+import com.progressoft.jip11.tools.objects.StudentInfo;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -20,8 +22,13 @@ class StudentsWriterTest {
     void givenExistingFileName_whenWrite_thenShouldThrowException() throws IOException {
         Files.createFile(Paths.get("temp.xls"));
 
+        StudentInfo studentInfo = new StudentInfo(new StudentBuilder("1234", 'A', 80)
+                .setZScore(1.2).setCategory("Passed"));
+        List<StudentInfo> info = new ArrayList<>();
+        info.add(studentInfo);
+
         String message = assertThrows(StudentsWriterException.class,
-                () -> studentsWriter.write("hello", "temp")).getMessage();
+                () -> studentsWriter.write(info, "temp")).getMessage();
 
         assertEquals("File already exists", message);
 
@@ -30,17 +37,19 @@ class StudentsWriterTest {
 
     @Test
     void givenToWriteAndFileName_whenWrite_thenWriteToFile() throws IOException {
-        String toWrite = "1234,A,80,1.2,Elite\n" +"4321,B,60,-0.4,Passed\n";
+        StudentInfo studentInfo = new StudentInfo(new StudentBuilder("1234", 'A', 80)
+                .setZScore(1.2).setCategory("Passed"));
+        List<StudentInfo> info = new ArrayList<>();
+        info.add(studentInfo);
         String fileName = "test";
 
-        studentsWriter.write(toWrite, fileName);
+        studentsWriter.write(info, fileName);
 
         List<String> result = Files.readAllLines(Paths.get("test.xls"));
 
         List<String> expected = new ArrayList<>();
         expected.add("Student_id,class_no,mark,z_score,category");
-        expected.add("1234,A,80,1.2,Elite");
-        expected.add("4321,B,60,-0.4,Passed");
+        expected.add("1234,A,80,1.2,Passed");
 
         assertEquals(expected, result);
 

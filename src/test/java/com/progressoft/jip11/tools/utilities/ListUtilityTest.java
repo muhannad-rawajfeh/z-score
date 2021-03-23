@@ -1,5 +1,6 @@
 package com.progressoft.jip11.tools.utilities;
 
+import com.progressoft.jip11.tools.objects.StudentBuilder;
 import com.progressoft.jip11.tools.objects.StudentInfo;
 import com.progressoft.jip11.tools.studentsreader.CsvReader;
 import com.progressoft.jip11.tools.studentsreader.StudentsReader;
@@ -56,7 +57,7 @@ class ListUtilityTest {
         List<StudentInfo> list = studentsReader.parse("src/test/resources/z-calc.csv");
         ZCalculator zCalculator = new ZCalculator(list);
 
-        String[] given = zCalculator.findAllZScores().split("[,\\n]");
+        List<StudentInfo> given = zCalculator.findAllZScores();
 
         int count1 = listUtility.countElite(given, 0.6);
         assertEquals(2, count1);
@@ -80,15 +81,21 @@ class ListUtilityTest {
         List<StudentInfo> list = studentsReader.parse("src/test/resources/z-calc.csv");
         ZCalculator zCalculator = new ZCalculator(list);
 
-        String[] given = zCalculator.findAllZScores().split("[,\\n]");
+        List<StudentInfo> given = zCalculator.findAllZScores();
 
-        String result = listUtility.findAllCategories(given, 1.2, -0.6);
+        List<StudentInfo> result = listUtility.findAllCategories(given, 1.2, -0.6);
 
-        String expected = "123456789,A,5,-1.26,Failed\n" +
-                "987654321,B,10,-0.63,Failed\n" +
-                "123456780,A,15,0,Passed\n" +
-                "987654320,B,20,0.63,Passed\n" +
-                "987654322,B,25,1.26,Elite\n";
+        StudentInfo s1 = new StudentInfo(new StudentBuilder("123456789", 'A', 5).setZScore(-1.26).setCategory("Failed"));
+        StudentInfo s2 = new StudentInfo(new StudentBuilder("987654321", 'B', 10).setZScore(-0.63).setCategory("Failed"));
+        StudentInfo s3 = new StudentInfo(new StudentBuilder("123456780", 'A', 15).setZScore(0).setCategory("Passed"));
+        StudentInfo s4 = new StudentInfo(new StudentBuilder("987654320", 'B', 20).setZScore(0.63).setCategory("Passed"));
+        StudentInfo s5 = new StudentInfo(new StudentBuilder("987654322", 'B', 25).setZScore(1.26).setCategory("Elite"));
+        List<StudentInfo> expected = new ArrayList<>();
+        expected.add(s1);
+        expected.add(s2);
+        expected.add(s3);
+        expected.add(s4);
+        expected.add(s5);
 
         assertEquals(expected, result);
     }
