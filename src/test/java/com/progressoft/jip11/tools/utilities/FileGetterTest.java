@@ -10,14 +10,14 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class FileGetterTest {
 
     private final FileGetter fileGetter = new FileGetter(new CsvReader(new StudentInfoFormat()));
 
     @Test
-    void givenFileInput_whenGetFileAndParse_thenReturnListOfStudentsInfo() {
+    void givenValidFileInput_whenGetFileAndParse_thenReturnListOfStudentsInfo() {
         String input = "src/test/resources/valid-file.csv";
         InputStream in = new ByteArrayInputStream(input.getBytes());
         System.setIn(in);
