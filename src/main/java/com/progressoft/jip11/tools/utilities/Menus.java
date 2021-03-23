@@ -62,7 +62,7 @@ public class Menus {
     }
 
     private void disSpecSummary() {
-        consumeMenu(this::disSpecSummary, 1);
+        consumeMenu(this::disSpecSummary, this::doDisplaySummary);
     }
 
     private void displayZScores() {
@@ -70,7 +70,7 @@ public class Menus {
     }
 
     private void disSpecZScores() {
-        consumeMenu(this::disSpecZScores, 2);
+        consumeMenu(this::disSpecZScores, this::doDisplayZScores);
     }
 
     private void catStudents() {
@@ -78,10 +78,10 @@ public class Menus {
     }
 
     private void catSpecClass() {
-        consumeMenu(this::catSpecClass, 3);
+        consumeMenu(this::catSpecClass, this::doCatStudents);
     }
 
-    private void consumeMenu(MenuConsumer menuConsumer, int methodNo) {
+    private void consumeMenu(MenuConsumer menuConsumer, MethodConsumer methodConsumer) {
         System.out.println("Enter class_no:");
         String input = getClassNo();
         char classNo = input.charAt(0);
@@ -91,13 +91,7 @@ public class Menus {
             menuConsumer.consume();
         } else {
             List<StudentInfo> specificClassList = listUtility.getAllInClass(classNo, allStudents);
-            if (methodNo == 1) {
-                doDisplaySummary(specificClassList);
-            } else if (methodNo == 2) {
-                doDisplayZScores(specificClassList);
-            } else if (methodNo == 3) {
-                doCatStudents(specificClassList);
-            }
+            methodConsumer.consume(specificClassList);
         }
     }
 
@@ -225,6 +219,12 @@ public class Menus {
                 "5- Categorize students\n" +
                 "6- Categorize students in a specific class\n" +
                 "7- Exit\n");
+    }
+
+    @FunctionalInterface
+    interface MethodConsumer {
+
+        void consume(List<StudentInfo> list);
     }
 
     @FunctionalInterface
