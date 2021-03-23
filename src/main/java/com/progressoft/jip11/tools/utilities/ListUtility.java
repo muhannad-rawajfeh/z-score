@@ -28,23 +28,11 @@ public class ListUtility {
     }
 
     public int countElite(List<StudentInfo> list, double eliteDev) {
-        int count = 0;
-        for (StudentInfo s : list) {
-            if (s.getZScore() >= eliteDev) {
-                count++;
-            }
-        }
-        return count;
+        return countCategories((zScore, dev) -> zScore >= eliteDev, list, eliteDev);
     }
 
     public int countFailed(List<StudentInfo> list, double failedDev) {
-        int count = 0;
-        for (StudentInfo s : list) {
-            if (s.getZScore() <= failedDev) {
-                count++;
-            }
-        }
-        return count;
+        return countCategories((zScore, dev) -> zScore <= failedDev, list, failedDev);
     }
 
     public int countPassed(List<StudentInfo> list, double eliteDev, double failedDev) {
@@ -104,5 +92,21 @@ public class ListUtility {
 
     private boolean isEqual(char c1, char c2) {
         return Character.toLowerCase(c1) == c2 || Character.toUpperCase(c1) == c2;
+    }
+
+    private int countCategories(Predicate predicate, List<StudentInfo> list, double dev) {
+        int count = 0;
+        for (StudentInfo s : list) {
+            if (predicate.evaluate(s.getZScore(), dev)) {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    @FunctionalInterface
+    interface Predicate {
+
+        boolean evaluate(double zScore, double dev);
     }
 }
