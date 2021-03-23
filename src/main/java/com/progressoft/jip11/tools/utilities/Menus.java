@@ -111,7 +111,7 @@ public class Menus {
             catStudents();
         } else {
             ZCalculator zCalculator = new ZCalculator(list);
-            String[] result = zCalculator.findAllZScores().split("[,\\n]");
+            List<StudentInfo> result = zCalculator.findAllZScores();
             ListUtility listUtility = new ListUtility();
             int c1 = listUtility.countElite(result, eliteDev);
             int c2 = listUtility.countPassed(result, eliteDev, failedDev);
@@ -122,14 +122,14 @@ public class Menus {
             System.out.println("Do you want to save the results to a file (yes/no):");
             String answer = getAnswer();
             if (answer.equalsIgnoreCase("yes")) {
-                String categories = listUtility.findAllCategories(result, eliteDev, failedDev);
+                List<StudentInfo> categories = listUtility.findAllCategories(result, eliteDev, failedDev);
                 StudentsWriter writer = new CsvWriter();
                 saveToFile(categories, writer);
             }
         }
     }
 
-    private void saveToFile(String categories, StudentsWriter writer) {
+    private void saveToFile(List<StudentInfo> categories, StudentsWriter writer) {
         String fileName = getFileName();
         try {
             writer.write(categories, fileName);
@@ -157,9 +157,9 @@ public class Menus {
     private void doDisplayZScores(List<StudentInfo> list) {
         System.out.format("%15s%15s%15s%15s%n", "Student_ID", "Classroom", "Mark", "Z-Score");
         ZCalculator zCalculator = new ZCalculator(list);
-        String[] result = zCalculator.findAllZScores().split("[,\\n]");
-        for (int i = 0; i < result.length; i += 4) {
-            System.out.format("%15s%15s%15s%15s%n", result[i], result[i+1], result[i+2], result[i+3]);
+        List<StudentInfo> result = zCalculator.findAllZScores();
+        for (StudentInfo s : result) {
+            System.out.format("%15s%15s%15s%15s%n", s.getId(), s.getClassNo(), s.getMark(), s.getZScore());
         }
     }
 
