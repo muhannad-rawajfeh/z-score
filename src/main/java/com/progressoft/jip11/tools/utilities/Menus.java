@@ -101,7 +101,7 @@ public class Menus {
         System.out.println("Enter Failed Deviations:");
         double failedDev = getDev();
         if (failedDev >= eliteDev) {
-            System.out.println("Failed deviations cannot be higher than or equal Elite deviations, try again...");
+            System.out.println("Elite deviations should be higher than Failed deviations, try again...");
             catStudents();
         } else {
             startCategorizing(list, eliteDev, failedDev);
