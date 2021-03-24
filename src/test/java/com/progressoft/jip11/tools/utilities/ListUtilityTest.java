@@ -54,7 +54,7 @@ class ListUtilityTest {
     @Test
     void givenArrayOfZScores_whenCountDeviations_thenReturnNoOfEachCategory() {
         StudentsReader studentsReader = new CsvReader(new StudentInfoFormat());
-        List<StudentInfo> list = studentsReader.parse("src/test/resources/z-calc.csv");
+        List<StudentInfo> list = studentsReader.parse("src/test/resources/valid-file-2.csv");
         ZCalculator zCalculator = new ZCalculator(list);
 
         List<StudentInfo> given = zCalculator.findAllZScores();
@@ -78,7 +78,7 @@ class ListUtilityTest {
     @Test
     void givenArrayOfZScores_whenFindAllCategories_thenReturnCategoryForEachStudent() {
         StudentsReader studentsReader = new CsvReader(new StudentInfoFormat());
-        List<StudentInfo> list = studentsReader.parse("src/test/resources/z-calc.csv");
+        List<StudentInfo> list = studentsReader.parse("src/test/resources/valid-file-2.csv");
         ZCalculator zCalculator = new ZCalculator(list);
 
         List<StudentInfo> given = zCalculator.findAllZScores();

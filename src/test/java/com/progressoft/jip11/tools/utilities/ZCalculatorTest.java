@@ -36,7 +36,7 @@ class ZCalculatorTest {
 
     @Test
     void givenFile_whenFindVariance_thenReturnVariance() {
-        studentsInfo = studentsReader.parse("src/test/resources/z-calc.csv");
+        studentsInfo = studentsReader.parse("src/test/resources/valid-file-2.csv");
         zCalculator = new ZCalculator(studentsInfo);
         double result = zCalculator.findVariance();
         assertEquals(62.5, result);
@@ -44,7 +44,7 @@ class ZCalculatorTest {
 
     @Test
     void givenFile_whenFindStandardDeviation_thenReturnStandardDeviation() {
-        studentsInfo = studentsReader.parse("src/test/resources/z-calc.csv");
+        studentsInfo = studentsReader.parse("src/test/resources/valid-file-2.csv");
         zCalculator = new ZCalculator(studentsInfo);
         double result = zCalculator.findStDeviation();
         assertEquals(7.91, result);
@@ -52,7 +52,7 @@ class ZCalculatorTest {
 
     @Test
     void givenFile_whenFindZScore_thenReturnZScoreForEachStudent() {
-        studentsInfo = studentsReader.parse("src/test/resources/z-calc.csv");
+        studentsInfo = studentsReader.parse("src/test/resources/valid-file-2.csv");
         zCalculator = new ZCalculator(studentsInfo);
 
         List<StudentInfo> result = zCalculator.findAllZScores();
