@@ -14,6 +14,9 @@ import java.util.List;
 
 public class CsvReader implements StudentsReader {
 
+    // TODO good separation but you could have the DataFormat inside the validator,
+    // if you look at your code you are injecting the dataformat to pass it for the validator
+    // you might think of injecting the validator and isolate this reader from dataformat class
     private final DataFormat dataFormat;
     private final FileValidator validator = new FileValidator();
 
@@ -34,7 +37,7 @@ public class CsvReader implements StudentsReader {
                 if (line.isBlank()) continue;
                 studentsInfo.add(mapLine(line, lineNo));
             }
-            validator.isEmptyFile(studentsInfo);
+            validator.isEmptyFile(studentsInfo);// TODO I think this is not needed
             return studentsInfo;
         } catch (IOException e) {
             throw new StudentsReaderException(e.getMessage(), e);

@@ -27,28 +27,28 @@ public class Menus {
         switch (choice) {
             case "1":
                 displaySummary();
-                goToMainMenu();
+                break;
             case "2":
                 disSpecSummary();
-                goToMainMenu();
+                break;
             case "3":
                 displayZScores();
-                goToMainMenu();
+                break;
             case "4":
                 disSpecZScores();
-                goToMainMenu();
+                break;
             case "5":
                 catStudents();
-                goToMainMenu();
+                break;
             case "6":
                 catSpecClass();
-                goToMainMenu();
+                break;
             case "7":
-                System.exit(0);
+                return;
             default:
                 System.out.println("Invalid input, try again...");
-                goToMainMenu();
         }
+        goToMainMenu();
     }
 
     private String getOptionNo() {
@@ -81,17 +81,17 @@ public class Menus {
         consumeMenu(this::catSpecClass, this::doCatStudents);
     }
 
-    private void consumeMenu(MenuConsumer menuConsumer, MethodConsumer methodConsumer) {
+    private void consumeMenu(MenuConsumer failAction, MethodConsumer successAction) {
         System.out.println("Enter class_no:");
         String input = getClassNo();
         char classNo = input.charAt(0);
         ListUtility listUtility = new ListUtility();
         if (!listUtility.isClassExist(classNo, allStudents)) {
             System.out.println("Classroom does not exist, try again...");
-            menuConsumer.consume();
+            failAction.consume();
         } else {
             List<StudentInfo> specificClassList = listUtility.getAllInClass(classNo, allStudents);
-            methodConsumer.consume(specificClassList);
+            successAction.consume(specificClassList);
         }
     }
 
@@ -112,11 +112,13 @@ public class Menus {
         ZCalculator zCalculator = new ZCalculator(list);
         List<StudentInfo> result = zCalculator.findAllZScores();
         ListUtility listUtility = new ListUtility();
+        // TODO all of those should be in a one single method
         int c1 = listUtility.countElite(result, eliteDev);
         int c2 = listUtility.countPassed(result, eliteDev, failedDev);
         int c3 = listUtility.countFailed(result, failedDev);
         int c4 = listUtility.getPassingScore(result, eliteDev, failedDev);
         int c5 = listUtility.getEliteScore(result);
+        // TODO to here
         printSummary(list, c1, c2, c3, c4, c5);
         System.out.println("Do you want to save the results to a file (yes/no):");
         String answer = getAnswer();
@@ -163,6 +165,8 @@ public class Menus {
 
     private void doDisplaySummary(List<StudentInfo> list) {
         ZCalculator zCalculator = new ZCalculator(list);
+        // TODO I think you can improve this by having one method doing all of this stuff then return it as
+        // an object, say: SummaryResults
         double median = zCalculator.findMedian();
         double variance = zCalculator.findVariance();
         double deviation = zCalculator.findStDeviation();

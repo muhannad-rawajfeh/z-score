@@ -50,6 +50,11 @@ public class ZCalculator {
         List<StudentInfo> result = new ArrayList<>();
         for (StudentInfo s : studentsInfo) {
             double zScore = calcZScore(s.getMark(), mean, stDeviation);
+            // TODO instead of recreating the student info, you can create a wrapper object around this student
+            // ScoredStudent {
+            //  double zscore;
+            //  StudentInfo studentInfo
+            // }
             StudentInfo studentInfo = new StudentInfo(new StudentBuilder(s.getId(), s.getClassNo(), s.getMark())
                     .setZScore(zScore));
             result.add(studentInfo);
