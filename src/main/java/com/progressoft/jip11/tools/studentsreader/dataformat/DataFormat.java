@@ -5,7 +5,10 @@ import java.util.regex.Pattern;
 public interface DataFormat {
 
     int getNoOfFields();
+
     Pattern getStudentIdPattern();
+
     Pattern getClassNoPattern();
+
     Pattern getMarkPattern();
 }

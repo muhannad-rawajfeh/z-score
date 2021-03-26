@@ -1,9 +1,9 @@
 package com.progressoft.jip11.tools.utilities;
 
+import com.progressoft.jip11.tools.exceptions.StudentsWriterException;
 import com.progressoft.jip11.tools.objects.*;
 import com.progressoft.jip11.tools.studentswriter.CsvWriter;
 import com.progressoft.jip11.tools.studentswriter.StudentsWriter;
-import com.progressoft.jip11.tools.exceptions.StudentsWriterException;
 
 import java.util.List;
 import java.util.Scanner;
@@ -21,6 +21,20 @@ public class Menus {
         System.out.println("-----------------------------------------------------\n" +
                 "Welcome to Z-Score App. Please insert your file path:\n" +
                 "-----------------------------------------------------");
+    }
+
+    private static void displayMainMenu() {
+        System.out.println("---------------------------------------\n" +
+                "What would you like to do?\n" +
+                "Choose by inserting an option number:\n" +
+                "---------------------------------------\n" +
+                "1- Summary\n" +
+                "2- Summary for a specific class\n" +
+                "3- Display Z-scores\n" +
+                "4- Display Z-scores for a specific class\n" +
+                "5- Categorize students\n" +
+                "6- Categorize students in a specific class\n" +
+                "7- Exit\n");
     }
 
     public void callMainMenu() {
@@ -214,20 +228,6 @@ public class Menus {
             return getClassNo();
         }
         return input;
-    }
-
-    private static void displayMainMenu() {
-        System.out.println("---------------------------------------\n" +
-                "What would you like to do?\n" +
-                "Choose by inserting an option number:\n" +
-                "---------------------------------------\n" +
-                "1- Summary\n" +
-                "2- Summary for a specific class\n" +
-                "3- Display Z-scores\n" +
-                "4- Display Z-scores for a specific class\n" +
-                "5- Categorize students\n" +
-                "6- Categorize students in a specific class\n" +
-                "7- Exit\n");
     }
 
     @FunctionalInterface
