@@ -1,6 +1,6 @@
 package com.progressoft.jip11.tools.utilities;
 
-import com.progressoft.jip11.tools.objects.StudentBuilder;
+import com.progressoft.jip11.tools.objects.ScoredStudent;
 import com.progressoft.jip11.tools.objects.StudentInfo;
 
 import java.text.DecimalFormat;
@@ -44,20 +44,14 @@ public class ZCalculator {
         return format(Math.sqrt(findVariance()));
     }
 
-    public List<StudentInfo> findAllZScores() {
+    public List<ScoredStudent> findZScores() {
         double mean = findMean();
         double stDeviation = findStDeviation();
-        List<StudentInfo> result = new ArrayList<>();
+        List<ScoredStudent> result = new ArrayList<>();
         for (StudentInfo s : studentsInfo) {
             double zScore = calcZScore(s.getMark(), mean, stDeviation);
-            // TODO instead of recreating the student info, you can create a wrapper object around this student
-            // ScoredStudent {
-            //  double zscore;
-            //  StudentInfo studentInfo
-            // }
-            StudentInfo studentInfo = new StudentInfo(new StudentBuilder(s.getId(), s.getClassNo(), s.getMark())
-                    .setZScore(zScore));
-            result.add(studentInfo);
+            ScoredStudent scoredStudent = new ScoredStudent(s, zScore);
+            result.add(scoredStudent);
         }
         return result;
     }

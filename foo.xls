@@ -1,0 +1,6 @@
+Student_id,class_no,mark,z_score,category
+123456789,A,5,-1.26,Failed
+987654321,B,10,-0.63,Failed
+123456780,A,15,0.0,Passed
+987654320,B,20,0.63,Passed
+987654322,B,25,1.26,Elite

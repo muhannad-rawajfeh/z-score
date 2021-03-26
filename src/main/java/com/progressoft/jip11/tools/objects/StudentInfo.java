@@ -7,23 +7,11 @@ public class StudentInfo {
     private final String id;
     private final char classNo;
     private final int mark;
-    private final double zScore;
-    private final String category;
 
     public StudentInfo(String id, char classNo, int mark) {
         this.id = id;
         this.classNo = classNo;
         this.mark = mark;
-        this.zScore = 0;
-        this.category = null;
-    }
-
-    public StudentInfo(StudentBuilder builder) {
-        this.id = builder.getId();
-        this.classNo = builder.getClassNo();
-        this.mark = builder.getMark();
-        this.zScore = builder.getZScore();
-        this.category = builder.getCategory();
     }
 
     public String getId() {
@@ -38,17 +26,9 @@ public class StudentInfo {
         return mark;
     }
 
-    public double getZScore() {
-        return zScore;
-    }
-
-    public String getCategory() {
-        return category;
-    }
-
     @Override
     public String toString() {
-        return id + "," + classNo + "," + mark + "," + zScore + "," + category;
+        return id + "," + classNo + "," + mark;
     }
 
     @Override
@@ -56,11 +36,11 @@ public class StudentInfo {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         StudentInfo that = (StudentInfo) o;
-        return classNo == that.classNo && mark == that.mark && Double.compare(that.zScore, zScore) == 0 && Objects.equals(id, that.id) && Objects.equals(category, that.category);
+        return classNo == that.classNo && mark == that.mark && Objects.equals(id, that.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, classNo, mark, zScore, category);
+        return Objects.hash(id, classNo, mark);
     }
 }

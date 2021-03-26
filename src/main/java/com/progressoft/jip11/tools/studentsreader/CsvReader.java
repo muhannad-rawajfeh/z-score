@@ -3,6 +3,7 @@ package com.progressoft.jip11.tools.studentsreader;
 import com.progressoft.jip11.tools.exceptions.StudentsReaderException;
 import com.progressoft.jip11.tools.objects.StudentInfo;
 import com.progressoft.jip11.tools.studentsreader.dataformat.DataFormat;
+import com.progressoft.jip11.tools.studentsreader.dataformat.StudentInfoFormat;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -14,15 +15,7 @@ import java.util.List;
 
 public class CsvReader implements StudentsReader {
 
-    // TODO good separation but you could have the DataFormat inside the validator,
-    // if you look at your code you are injecting the dataformat to pass it for the validator
-    // you might think of injecting the validator and isolate this reader from dataformat class
-    private final DataFormat dataFormat;
-    private final FileValidator validator = new FileValidator();
-
-    public CsvReader(DataFormat dataFormat) {
-        this.dataFormat = dataFormat;
-    }
+    private final FileValidator validator = new FileValidator(new StudentInfoFormat());
 
     @Override
     public List<StudentInfo> parse(String path) {
@@ -37,7 +30,6 @@ public class CsvReader implements StudentsReader {
                 if (line.isBlank()) continue;
                 studentsInfo.add(mapLine(line, lineNo));
             }
-            validator.isEmptyFile(studentsInfo);// TODO I think this is not needed
             return studentsInfo;
         } catch (IOException e) {
             throw new StudentsReaderException(e.getMessage(), e);
@@ -46,7 +38,7 @@ public class CsvReader implements StudentsReader {
 
     private StudentInfo mapLine(String line, int lineNo) {
         String[] attributes = line.split(",");
-        validator.validateFields(dataFormat, attributes, lineNo);
+        validator.validateFields(attributes, lineNo);
         String studentId = attributes[0];
         char classNo = attributes[1].charAt(0);
         int mark = Integer.parseInt(attributes[2]);

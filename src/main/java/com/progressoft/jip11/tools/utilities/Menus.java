@@ -1,6 +1,6 @@
 package com.progressoft.jip11.tools.utilities;
 
-import com.progressoft.jip11.tools.objects.StudentInfo;
+import com.progressoft.jip11.tools.objects.*;
 import com.progressoft.jip11.tools.studentswriter.CsvWriter;
 import com.progressoft.jip11.tools.studentswriter.StudentsWriter;
 import com.progressoft.jip11.tools.exceptions.StudentsWriterException;
@@ -10,6 +10,7 @@ import java.util.Scanner;
 
 public class Menus {
 
+    private final ListUtility listUtility = new ListUtility();
     private final List<StudentInfo> allStudents;
 
     public Menus(List<StudentInfo> list) {
@@ -22,7 +23,7 @@ public class Menus {
                 "-----------------------------------------------------");
     }
 
-    public void goToMainMenu() {
+    public void callMainMenu() {
         String choice = getOptionNo();
         switch (choice) {
             case "1":
@@ -48,7 +49,7 @@ public class Menus {
             default:
                 System.out.println("Invalid input, try again...");
         }
-        goToMainMenu();
+        callMainMenu();
     }
 
     private String getOptionNo() {
@@ -81,17 +82,16 @@ public class Menus {
         consumeMenu(this::catSpecClass, this::doCatStudents);
     }
 
-    private void consumeMenu(MenuConsumer failAction, MethodConsumer successAction) {
+    private void consumeMenu(FailedAction failedAction, SuccessAction successAction) {
         System.out.println("Enter class_no:");
         String input = getClassNo();
         char classNo = input.charAt(0);
-        ListUtility listUtility = new ListUtility();
         if (!listUtility.isClassExist(classNo, allStudents)) {
             System.out.println("Classroom does not exist, try again...");
-            failAction.consume();
+            failedAction.fail();
         } else {
             List<StudentInfo> specificClassList = listUtility.getAllInClass(classNo, allStudents);
-            successAction.consume(specificClassList);
+            successAction.succeed(specificClassList);
         }
     }
 
@@ -104,32 +104,42 @@ public class Menus {
             System.out.println("Elite deviations should be higher than Failed deviations, try again...");
             catStudents();
         } else {
-            startCategorizing(list, eliteDev, failedDev);
+            CategorizeRequest request = new CategorizeRequest(list, eliteDev, failedDev);
+            startCategorizing(request);
         }
     }
 
-    private void startCategorizing(List<StudentInfo> list, double eliteDev, double failedDev) {
-        ZCalculator zCalculator = new ZCalculator(list);
-        List<StudentInfo> result = zCalculator.findAllZScores();
-        ListUtility listUtility = new ListUtility();
-        // TODO all of those should be in a one single method
-        int c1 = listUtility.countElite(result, eliteDev);
-        int c2 = listUtility.countPassed(result, eliteDev, failedDev);
-        int c3 = listUtility.countFailed(result, failedDev);
-        int c4 = listUtility.getPassingScore(result, eliteDev, failedDev);
-        int c5 = listUtility.getEliteScore(result);
-        // TODO to here
-        printSummary(list, c1, c2, c3, c4, c5);
+    private void startCategorizing(CategorizeRequest request) {
+        ZCalculator zCalculator = new ZCalculator((List<StudentInfo>) request.getList());
+        List<ScoredStudent> result = zCalculator.findZScores();
+        printSummary(request, result);
         System.out.println("Do you want to save the results to a file (yes/no):");
         String answer = getAnswer();
         if (answer.equalsIgnoreCase("yes")) {
-            List<StudentInfo> categories = listUtility.findAllCategories(result, eliteDev, failedDev);
+            CategorizeRequest request2 = new CategorizeRequest(result, request.getEliteDev(), request.getFailedDev());
+            List<CategorizedStudent> categories = listUtility.findCategories(request2);
             StudentsWriter writer = new CsvWriter();
             saveToFile(categories, writer);
         }
     }
 
-    private void saveToFile(List<StudentInfo> categories, StudentsWriter writer) {
+    private void printSummary(CategorizeRequest request, List<ScoredStudent> result) {
+        double eliteDev = request.getEliteDev();
+        double failedDev = request.getFailedDev();
+        int c1 = listUtility.countElite(result, eliteDev);
+        int c2 = listUtility.countPassed(result, eliteDev, failedDev);
+        int c3 = listUtility.countFailed(result, failedDev);
+        int c4 = listUtility.getPassingScore(result, eliteDev, failedDev);
+        int c5 = listUtility.getEliteScore(result);
+        doDisplaySummary((List<StudentInfo>) request.getList());
+        System.out.println("Elite students count: " + c1 + "\n" +
+                "Passed students count: " + c2 + "\n" +
+                "Failed students count: " + c3 + "\n" +
+                "Passing score: " + c4 + "\n" +
+                "Elite score: " + c5 + "\n");
+    }
+
+    private void saveToFile(List<CategorizedStudent> categories, StudentsWriter writer) {
         String fileName = getFileName();
         try {
             writer.write(categories, fileName);
@@ -145,36 +155,31 @@ public class Menus {
         return scanner.next();
     }
 
-    private void printSummary(List<StudentInfo> list, int c1, int c2, int c3, int c4, int c5) {
-        doDisplaySummary(list);
-        System.out.println("Elite students count: " + c1 + "\n" +
-                "Passed students count: " + c2 + "\n" +
-                "Failed students count: " + c3 + "\n" +
-                "Passing score: " + c4 + "\n" +
-                "Elite score: " + c5 + "\n");
-    }
-
     private void doDisplayZScores(List<StudentInfo> list) {
         System.out.format("%15s%15s%15s%15s%n", "Student_ID", "Classroom", "Mark", "Z-Score");
         ZCalculator zCalculator = new ZCalculator(list);
-        List<StudentInfo> result = zCalculator.findAllZScores();
-        for (StudentInfo s : result) {
-            System.out.format("%15s%15s%15s%15s%n", s.getId(), s.getClassNo(), s.getMark(), s.getZScore());
+        List<ScoredStudent> result = zCalculator.findZScores();
+        for (ScoredStudent s : result) {
+            StudentInfo ss = s.getStudentInfo();
+            System.out.format("%15s%15s%15s%15s%n", ss.getId(), ss.getClassNo(), ss.getMark(), s.getZScore());
         }
     }
 
     private void doDisplaySummary(List<StudentInfo> list) {
+        SummaryResults results = getSummaryResults(list);
+        System.out.println("Median: " + results.getMedian() + "\n" +
+                "Variance: " + results.getVariance() + "\n" +
+                "Standard Deviation: " + results.getStDeviation() + "\n" +
+                "Total Count: " + results.getTotalCount());
+    }
+
+    private SummaryResults getSummaryResults(List<StudentInfo> list) {
         ZCalculator zCalculator = new ZCalculator(list);
-        // TODO I think you can improve this by having one method doing all of this stuff then return it as
-        // an object, say: SummaryResults
         double median = zCalculator.findMedian();
         double variance = zCalculator.findVariance();
         double deviation = zCalculator.findStDeviation();
         int count = zCalculator.getCount();
-        System.out.println("Median: " + median + "\n" +
-                "Variance: " + variance + "\n" +
-                "Standard Deviation: " + deviation + "\n" +
-                "Total Count: " + count);
+        return new SummaryResults(median, variance, deviation, count);
     }
 
     private String getAnswer() {
@@ -211,7 +216,7 @@ public class Menus {
         return input;
     }
 
-    private void displayMainMenu() {
+    private static void displayMainMenu() {
         System.out.println("---------------------------------------\n" +
                 "What would you like to do?\n" +
                 "Choose by inserting an option number:\n" +
@@ -226,14 +231,14 @@ public class Menus {
     }
 
     @FunctionalInterface
-    interface MethodConsumer {
+    interface SuccessAction {
 
-        void consume(List<StudentInfo> list);
+        void succeed(List<StudentInfo> list);
     }
 
     @FunctionalInterface
-    interface MenuConsumer {
+    interface FailedAction {
 
-        void consume();
+        void fail();
     }
 }

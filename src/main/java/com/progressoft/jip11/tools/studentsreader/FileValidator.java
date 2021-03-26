@@ -1,14 +1,18 @@
 package com.progressoft.jip11.tools.studentsreader;
 
 import com.progressoft.jip11.tools.exceptions.StudentsReaderException;
-import com.progressoft.jip11.tools.objects.StudentInfo;
 import com.progressoft.jip11.tools.studentsreader.dataformat.DataFormat;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.List;
 
 public class FileValidator {
+
+    private final DataFormat dataFormat;
+
+    public FileValidator(DataFormat dataFormat) {
+        this.dataFormat = dataFormat;
+    }
 
     public void validateFile(String path) {
         if (path == null) {
@@ -19,43 +23,37 @@ public class FileValidator {
         }
     }
 
-    public void isEmptyFile(List<StudentInfo> list) {
-        if (list.isEmpty()) {
-            throw new StudentsReaderException("File is empty");
-        }
-    }
-
-    public void validateFields(DataFormat dataFormat, String[] attributes, int lineNo) {
-        if (!isValidNoOfFields(dataFormat, attributes)) {
+    public void validateFields(String[] attributes, int lineNo) {
+        if (!isValidNoOfFields(attributes)) {
             throw new StudentsReaderException("Invalid number of fields in line " + lineNo);
         }
-        if (!isValidStudentId(dataFormat, attributes[0])) {
+        if (!isValidStudentId(attributes[0])) {
             throw new StudentsReaderException("Invalid student_id in line " + lineNo);
         }
-        if (!isValidClassNo(dataFormat, attributes[1])) {
+        if (!isValidClassNo(attributes[1])) {
             throw new StudentsReaderException("Invalid class_no in line " + lineNo);
         }
-        if (!isValidMark(dataFormat, attributes[2])) {
+        if (!isValidMark(attributes[2])) {
             throw new StudentsReaderException("Invalid mark in line " + lineNo);
         }
     }
 
-    private boolean isValidMark(DataFormat dataFormat, String mark) {
+    private boolean isValidMark(String mark) {
         if (!dataFormat.getMarkPattern().matcher(mark).matches()) {
             return false;
         }
         return Integer.parseInt(mark) <= 100;
     }
 
-    private boolean isValidClassNo(DataFormat dataFormat, String classNo) {
+    private boolean isValidClassNo(String classNo) {
         return dataFormat.getClassNoPattern().matcher(classNo).matches();
     }
 
-    private boolean isValidStudentId(DataFormat dataFormat, String studentId) {
+    private boolean isValidStudentId(String studentId) {
         return dataFormat.getStudentIdPattern().matcher(studentId).matches();
     }
 
-    private boolean isValidNoOfFields(DataFormat dataFormat, String[] attributes) {
+    private boolean isValidNoOfFields(String[] attributes) {
         return dataFormat.getNoOfFields() == attributes.length;
     }
 }

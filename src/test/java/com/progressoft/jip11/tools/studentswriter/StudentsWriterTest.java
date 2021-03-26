@@ -1,7 +1,8 @@
 package com.progressoft.jip11.tools.studentswriter;
 
 import com.progressoft.jip11.tools.exceptions.StudentsWriterException;
-import com.progressoft.jip11.tools.objects.StudentBuilder;
+import com.progressoft.jip11.tools.objects.CategorizedStudent;
+import com.progressoft.jip11.tools.objects.ScoredStudent;
 import com.progressoft.jip11.tools.objects.StudentInfo;
 import org.junit.jupiter.api.Test;
 
@@ -22,10 +23,10 @@ class StudentsWriterTest {
     void givenExistingFileName_whenWrite_thenShouldThrowException() throws IOException {
         Files.createFile(Paths.get("temp.xls"));
 
-        StudentInfo studentInfo = new StudentInfo(new StudentBuilder("1234", 'A', 80)
-                .setZScore(1.2).setCategory("Passed"));
-        List<StudentInfo> info = new ArrayList<>();
-        info.add(studentInfo);
+        StudentInfo s = new StudentInfo("1234", 'A', 80);
+        CategorizedStudent cs = new CategorizedStudent(new ScoredStudent(s, 1.2), "Passed");
+        List<CategorizedStudent> info = new ArrayList<>();
+        info.add(cs);
 
         String message = assertThrows(StudentsWriterException.class,
                 () -> studentsWriter.write(info, "temp")).getMessage();
@@ -37,10 +38,10 @@ class StudentsWriterTest {
 
     @Test
     void givenToWriteAndFileName_whenWrite_thenWriteToFile() throws IOException {
-        StudentInfo studentInfo = new StudentInfo(new StudentBuilder("1234", 'A', 80)
-                .setZScore(1.2).setCategory("Passed"));
-        List<StudentInfo> info = new ArrayList<>();
-        info.add(studentInfo);
+        StudentInfo s = new StudentInfo("1234", 'A', 80);
+        CategorizedStudent cs = new CategorizedStudent(new ScoredStudent(s, 1.2), "Passed");
+        List<CategorizedStudent> info = new ArrayList<>();
+        info.add(cs);
         String fileName = "test";
 
         studentsWriter.write(info, fileName);

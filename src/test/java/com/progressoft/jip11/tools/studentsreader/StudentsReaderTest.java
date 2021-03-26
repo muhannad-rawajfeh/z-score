@@ -2,8 +2,6 @@ package com.progressoft.jip11.tools.studentsreader;
 
 import com.progressoft.jip11.tools.exceptions.StudentsReaderException;
 import com.progressoft.jip11.tools.objects.StudentInfo;
-import com.progressoft.jip11.tools.studentsreader.dataformat.DataFormat;
-import com.progressoft.jip11.tools.studentsreader.dataformat.StudentInfoFormat;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -20,8 +18,7 @@ class StudentsReaderTest {
 
     @BeforeEach
     void setUp() {
-        DataFormat dataFormat = new StudentInfoFormat();
-        reader = new CsvReader(dataFormat);
+        reader = new CsvReader();
     }
 
     @Test
@@ -47,16 +44,6 @@ class StudentsReaderTest {
                 () -> reader.parse(path2)).getMessage();
 
         assertEquals("File does not exist", message2);
-    }
-
-    @Test
-    void givenEmptyFile_whenParse_thenThrowException() {
-        String path = dirPath + "empty-file.csv";
-
-        String message = assertThrows(StudentsReaderException.class,
-                () -> reader.parse(path)).getMessage();
-
-        assertEquals("File is empty", message);
     }
 
     @Test

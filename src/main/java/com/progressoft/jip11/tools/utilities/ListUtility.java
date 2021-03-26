@@ -1,6 +1,8 @@
 package com.progressoft.jip11.tools.utilities;
 
-import com.progressoft.jip11.tools.objects.StudentBuilder;
+import com.progressoft.jip11.tools.objects.CategorizeRequest;
+import com.progressoft.jip11.tools.objects.CategorizedStudent;
+import com.progressoft.jip11.tools.objects.ScoredStudent;
 import com.progressoft.jip11.tools.objects.StudentInfo;
 
 import java.util.ArrayList;
@@ -27,17 +29,17 @@ public class ListUtility {
         return result;
     }
 
-    public int countElite(List<StudentInfo> list, double eliteDev) {
+    public int countElite(List<ScoredStudent> list, double eliteDev) {
         return countCategories((zScore, dev) -> zScore >= eliteDev, list, eliteDev);
     }
 
-    public int countFailed(List<StudentInfo> list, double failedDev) {
+    public int countFailed(List<ScoredStudent> list, double failedDev) {
         return countCategories((zScore, dev) -> zScore <= failedDev, list, failedDev);
     }
 
-    public int countPassed(List<StudentInfo> list, double eliteDev, double failedDev) {
+    public int countPassed(List<ScoredStudent> list, double eliteDev, double failedDev) {
         int count = 0;
-        for (StudentInfo s : list) {
+        for (ScoredStudent s : list) {
             if (s.getZScore() < eliteDev && s.getZScore() > failedDev) {
                 count++;
             }
@@ -45,11 +47,11 @@ public class ListUtility {
         return count;
     }
 
-    public int getPassingScore(List<StudentInfo> list, double eliteDev, double failedDev) {
+    public int getPassingScore(List<ScoredStudent> list, double eliteDev, double failedDev) {
         int passingScore = 1000;
-        for (StudentInfo s : list) {
+        for (ScoredStudent s : list) {
             if (s.getZScore() < eliteDev && s.getZScore() > failedDev) {
-                int mark = s.getMark();
+                int mark = s.getStudentInfo().getMark();
                 if (mark < passingScore) {
                     passingScore = mark;
                 }
@@ -58,10 +60,10 @@ public class ListUtility {
         return passingScore;
     }
 
-    public int getEliteScore(List<StudentInfo> list) {
+    public int getEliteScore(List<ScoredStudent> list) {
         int eliteScore = -1;
-        for (StudentInfo s : list) {
-            int mark = s.getMark();
+        for (ScoredStudent s : list) {
+            int mark = s.getStudentInfo().getMark();
             if (mark > eliteScore) {
                 eliteScore = mark;
             }
@@ -69,13 +71,12 @@ public class ListUtility {
         return eliteScore;
     }
 
-    public List<StudentInfo> findAllCategories(List<StudentInfo> list, double eliteDev, double failedDev) {
-        List<StudentInfo> result = new ArrayList<>();
-        for (StudentInfo s : list) {
-            String category = getCategory(s.getZScore(), eliteDev, failedDev);
-            StudentInfo studentInfo = new StudentInfo(new StudentBuilder(s.getId(), s.getClassNo(), s.getMark())
-                    .setZScore(s.getZScore()).setCategory(category));
-            result.add(studentInfo);
+    public List<CategorizedStudent> findCategories(CategorizeRequest request) {
+        List<CategorizedStudent> result = new ArrayList<>();
+        for (ScoredStudent s : (List<ScoredStudent>) request.getList()) {
+            String category = getCategory(s.getZScore(), request.getEliteDev(), request.getFailedDev());
+            CategorizedStudent cs = new CategorizedStudent(s, category);
+            result.add(cs);
         }
         return result;
     }
@@ -94,9 +95,9 @@ public class ListUtility {
         return Character.toLowerCase(c1) == c2 || Character.toUpperCase(c1) == c2;
     }
 
-    private int countCategories(Predicate predicate, List<StudentInfo> list, double dev) {
+    private int countCategories(Predicate predicate, List<ScoredStudent> list, double dev) {
         int count = 0;
-        for (StudentInfo s : list) {
+        for (ScoredStudent s : list) {
             if (predicate.evaluate(s.getZScore(), dev)) {
                 count++;
             }
