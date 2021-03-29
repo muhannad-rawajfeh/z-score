@@ -15,7 +15,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-class StudentsWriterTest {
+class CsvWriterTest {
 
     private final StudentsWriter studentsWriter = new CsvWriter();
 

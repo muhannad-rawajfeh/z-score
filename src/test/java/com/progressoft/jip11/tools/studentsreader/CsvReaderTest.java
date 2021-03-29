@@ -11,7 +11,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-class StudentsReaderTest {
+class CsvReaderTest {
 
     private static final String dirPath = "src/test/resources/";
     private StudentsReader reader;
