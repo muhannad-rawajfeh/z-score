@@ -71,9 +71,9 @@ public class ListUtility {
         return eliteScore;
     }
 
-    public List<CategorizedStudent> findCategories(CategorizeRequest request) {
+    public List<CategorizedStudent> findCategories(CategorizeRequest<ScoredStudent> request) {
         List<CategorizedStudent> result = new ArrayList<>();
-        for (ScoredStudent s : (List<ScoredStudent>) request.getList()) {
+        for (ScoredStudent s : request.getList()) {
             String category = getCategory(s.getZScore(), request.getEliteDev(), request.getFailedDev());
             CategorizedStudent cs = new CategorizedStudent(s, category);
             result.add(cs);

@@ -34,7 +34,7 @@ public class Menus {
                 "4- Display Z-scores for a specific class\n" +
                 "5- Categorize students\n" +
                 "6- Categorize students in a specific class\n" +
-                "7- Exit\n");
+                "7- Exit");
     }
 
     public void callMainMenu() {
@@ -77,7 +77,7 @@ public class Menus {
     }
 
     private void disSpecSummary() {
-        consumeMenu(this::disSpecSummary, this::doDisplaySummary);
+        consumeAction(this::disSpecSummary, this::doDisplaySummary);
     }
 
     private void displayZScores() {
@@ -85,7 +85,7 @@ public class Menus {
     }
 
     private void disSpecZScores() {
-        consumeMenu(this::disSpecZScores, this::doDisplayZScores);
+        consumeAction(this::disSpecZScores, this::doDisplayZScores);
     }
 
     private void catStudents() {
@@ -93,10 +93,10 @@ public class Menus {
     }
 
     private void catSpecClass() {
-        consumeMenu(this::catSpecClass, this::doCatStudents);
+        consumeAction(this::catSpecClass, this::doCatStudents);
     }
 
-    private void consumeMenu(FailedAction failedAction, SuccessAction successAction) {
+    private void consumeAction(FailedAction failedAction, SuccessAction successAction) {
         System.out.println("Enter class_no:");
         String input = getClassNo();
         char classNo = input.charAt(0);
@@ -118,26 +118,26 @@ public class Menus {
             System.out.println("Elite deviations should be higher than Failed deviations, try again...");
             catStudents();
         } else {
-            CategorizeRequest request = new CategorizeRequest(list, eliteDev, failedDev);
+            CategorizeRequest<StudentInfo> request = new CategorizeRequest<>(list, eliteDev, failedDev);
             startCategorizing(request);
         }
     }
 
-    private void startCategorizing(CategorizeRequest request) {
-        ZCalculator zCalculator = new ZCalculator((List<StudentInfo>) request.getList());
+    private void startCategorizing(CategorizeRequest<StudentInfo> request) {
+        ZCalculator zCalculator = new ZCalculator(request.getList());
         List<ScoredStudent> result = zCalculator.findZScores();
         printSummary(request, result);
         System.out.println("Do you want to save the results to a file (yes/no):");
         String answer = getAnswer();
         if (answer.equalsIgnoreCase("yes")) {
-            CategorizeRequest request2 = new CategorizeRequest(result, request.getEliteDev(), request.getFailedDev());
+            CategorizeRequest<ScoredStudent> request2 = new CategorizeRequest<>(result, request.getEliteDev(), request.getFailedDev());
             List<CategorizedStudent> categories = listUtility.findCategories(request2);
             StudentsWriter writer = new CsvWriter();
             saveToFile(categories, writer);
         }
     }
 
-    private void printSummary(CategorizeRequest request, List<ScoredStudent> result) {
+    private void printSummary(CategorizeRequest<StudentInfo> request, List<ScoredStudent> result) {
         double eliteDev = request.getEliteDev();
         double failedDev = request.getFailedDev();
         int c1 = listUtility.countElite(result, eliteDev);
@@ -145,12 +145,12 @@ public class Menus {
         int c3 = listUtility.countFailed(result, failedDev);
         int c4 = listUtility.getPassingScore(result, eliteDev, failedDev);
         int c5 = listUtility.getEliteScore(result);
-        doDisplaySummary((List<StudentInfo>) request.getList());
+        doDisplaySummary(request.getList());
         System.out.println("Elite students count: " + c1 + "\n" +
                 "Passed students count: " + c2 + "\n" +
                 "Failed students count: " + c3 + "\n" +
                 "Passing score: " + c4 + "\n" +
-                "Elite score: " + c5 + "\n");
+                "Elite score: " + c5);
     }
 
     private void saveToFile(List<CategorizedStudent> categories, StudentsWriter writer) {
@@ -199,11 +199,11 @@ public class Menus {
     private String getAnswer() {
         Scanner scanner = new Scanner(System.in);
         String answer = scanner.next();
-        if (isValidAnswer(answer)) {
-            return answer;
+        if (!isValidAnswer(answer)) {
+            System.out.println("Invalid Input, try again...");
+            return getAnswer();
         }
-        System.out.println("Invalid Input, try again...");
-        return getAnswer();
+        return answer;
     }
 
     private boolean isValidAnswer(String answer) {
