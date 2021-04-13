@@ -29,6 +29,7 @@ class FileGetterTest {
     }
 
     @Test
+    @Disabled
     void givenValidFileInput_whenGetFileAndParse_thenReturnListOfStudentsInfo() {
         String input = "src/test/resources/valid-file.csv";
         InputStream in = new ByteArrayInputStream(input.getBytes());

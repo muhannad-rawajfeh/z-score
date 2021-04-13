@@ -9,6 +9,7 @@ import java.util.Scanner;
 
 public class FileGetter {
 
+    private static final Scanner scanner = new Scanner(System.in);
     private final StudentsReader studentsReader;
 
     public FileGetter(StudentsReader studentsReader) {
@@ -16,7 +17,6 @@ public class FileGetter {
     }
 
     public List<StudentInfo> getFileAndParse() {
-        Scanner scanner = new Scanner(System.in);
         try {
             return studentsReader.parse(scanner.next());
         } catch (StudentsReaderException e) {

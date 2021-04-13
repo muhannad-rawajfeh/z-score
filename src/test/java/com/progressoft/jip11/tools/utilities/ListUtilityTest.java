@@ -83,7 +83,7 @@ class ListUtilityTest {
         ZCalculator zCalculator = new ZCalculator(list);
 
         List<ScoredStudent> given = zCalculator.findZScores();
-        CategorizeRequest request = new CategorizeRequest(given, 1.2, -0.6);
+        CategorizeRequest<ScoredStudent> request = new CategorizeRequest<>(given, 1.2, -0.6);
 
         List<CategorizedStudent> result = listUtility.findCategories(request);
 

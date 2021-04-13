@@ -10,6 +10,8 @@ import java.util.Scanner;
 
 public class Menus {
 
+    private static final Scanner scanner = new Scanner(System.in);
+
     private final ListUtility listUtility = new ListUtility();
     private final List<StudentInfo> allStudents;
 
@@ -68,7 +70,6 @@ public class Menus {
 
     private String getOptionNo() {
         displayMainMenu();
-        Scanner scanner = new Scanner(System.in);
         return scanner.next();
     }
 
@@ -165,7 +166,6 @@ public class Menus {
 
     private String getFileName() {
         System.out.println("Name your file:");
-        Scanner scanner = new Scanner(System.in);
         return scanner.next();
     }
 
@@ -197,7 +197,6 @@ public class Menus {
     }
 
     private String getAnswer() {
-        Scanner scanner = new Scanner(System.in);
         String answer = scanner.next();
         if (!isValidAnswer(answer)) {
             System.out.println("Invalid Input, try again...");
@@ -211,7 +210,6 @@ public class Menus {
     }
 
     private double getDev() {
-        Scanner scanner = new Scanner(System.in);
         try {
             return scanner.nextDouble();
         } catch (Exception e) {
@@ -221,7 +219,6 @@ public class Menus {
     }
 
     private String getClassNo() {
-        Scanner scanner = new Scanner(System.in);
         String input = scanner.next();
         if (!input.matches("[a-zA-z]")) {
             System.out.println("Invalid input, try again...");

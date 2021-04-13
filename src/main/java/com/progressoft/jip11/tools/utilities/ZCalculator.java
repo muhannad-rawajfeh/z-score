@@ -26,7 +26,7 @@ public class ZCalculator {
         }
         Arrays.sort(marks);
         if (length % 2 != 0) {
-            return marks[(length + 1) / 2 - 1];
+            return marks[length / 2];
         }
         return (double) (marks[length / 2 - 1] + marks[length / 2]) / 2;
     }
